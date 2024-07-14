@@ -1,0 +1,74 @@
+{% load static %}
+{% load tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    {% tailwind_css %}
+</head>
+<body class="bg-[#ebedf0]">
+    <section class="w-full min-h-[100vh]">
+       {% include 'central/nav.html' %}
+        <main class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-3 p-4">
+            <a href="/publication">
+                <div class="bg-white px-4 py-6 border-2 border-gray-300 rounded-md flex flex-col cursor-pointer">
+                    <p class="text-xl font-medium">Publications</p>
+                    <p class="text-sm text-slate-600">Publication in IEEE, Elsevier, ACM & international Conferences indexed in Scopus/UGC Care journals/indexed Book chapters from reputed publishers</p>
+                </div>
+            </a>
+
+            <div class="bg-white px-4 py-6 border-2 border-gray-300 rounded-md flex flex-col cursor-pointer">
+                <p class="text-xl font-medium">Consultancy works</p>
+                <p class="text-sm text-slate-600">All types of Consultancy works for both sanctioned and received types</p>
+            </div>
+
+            <div class="bg-white px-4 py-6 border-2 border-gray-300 rounded-md flex flex-col cursor-pointer">
+                <p class="text-xl font-medium">Project Funding</p>
+                <p class="text-sm text-slate-600">Both submitted and granted funding proposals</p>
+            </div>
+
+            <div class="bg-white px-4 py-6 border-2 border-gray-300 rounded-md flex flex-col cursor-pointer">
+                <p class="text-xl font-medium">IPR</p>
+                <p class="text-sm text-slate-600">All IPR related submissions Patent Filing including
+                    Design Filing,
+                    Copyright Filing,
+                    Patent Grant,
+                    Design Grant,
+                    Copyright Registered.
+                    </p>
+            </div>
+
+            <div class="bg-white px-4 py-6 border-2 border-gray-300 rounded-md flex flex-col cursor-pointer">
+                <p class="text-xl font-medium">PhD</p>
+                <p class="text-sm text-slate-600">PhD Enrollment for ongoing scholars, guides, and completed scholars</p>
+            </div>
+
+            <div class="bg-white px-4 py-6 border-2 border-gray-300 rounded-md flex flex-col cursor-pointer">
+                <p class="text-xl font-medium">Research Oriented STTP/FDP</p>
+                <p class="text-sm text-slate-600">For all research oriented STTP/FDP (NPTEL excluded)/ Seminar/Workshop attended 
+                    (Physical mode & External only)
+                    </p>
+            </div>
+
+            <div class="bg-white px-4 py-6 border-2 border-gray-300 rounded-md flex flex-col cursor-pointer">
+                <p class="text-xl font-medium">Acted as Resource Person</p>
+                <p class="text-sm text-slate-600">For Course development, visit to industries or reputed instition as resource person both online and offline.</p>
+            </div>
+
+            <div class="bg-white px-4 py-6 border-2 border-gray-300 rounded-md flex flex-col cursor-pointer">
+                <p class="text-xl font-medium">Research related Certifications</p>
+                <p class="text-sm text-slate-600">For Research related NPTEL/Coursera Certifications</p>
+            </div>
+
+            <div class="bg-white px-4 py-6 border-2 border-gray-300 rounded-md flex flex-col cursor-pointer">
+                <p class="text-xl font-medium">Awards</p>
+                <p class="text-sm text-slate-600">Awards Received related to Research & Innovation</p>
+            </div>
+
+
+        </main>
+    </section>
+</body>
+</html>

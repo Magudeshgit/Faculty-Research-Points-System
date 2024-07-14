@@ -1,0 +1,72 @@
+{% load static %}
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publications</title>
+    {% tailwind_css %}
+</head>
+<body class="bg-[#ebedf0]">
+    {% include 'central/nav.html' %}
+    <div class=" overflow-hidden relative bg-white w-full gap-2 py-6 px-6 lg:px-12 mt-4 rounded-md flex justify-between items-center flex-wrap">
+        <div>
+            <p class="text-xl font-medium">Publications</p>
+            <p class="text-sm text-slate-600">Publication in IEEE, Elsevier, ACM & international Conferences indexed in Scopus/UGC Care journals/indexed Book chapters from reputed publishers</p>
+        </div>
+        <div class="z-10">
+            <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#4f46e5] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                Add new
+                <img src="{% static 'images/add.svg' %}" class="min-w-[20px] min-h-[20px]">
+            </button>
+        </div>
+        <img src="{% static 'images/shadow.svg' %}" class="absolute max-w-[300px] top-[-60px] right-[-50px] opacity-50">
+    </div>
+    <div class="w-full mt-4">
+        <div class="relative max-w-[100%] min-h-full overflow-x-scroll mt-6 rounded-md bg-white px-4 lg:px-12">
+            <table class=" text-left min-h-full text-gray-500 bg-white dark:text-gray-400 rounded-md overflow-x-auto w-full">
+                <thead class="border-b text-gray-900 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Title
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            DOI/URL/ISSN
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            No of authors
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Approval Status
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-b">
+                        <td scope="row" class="hover:underline px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                            <a href="">
+                            Expansion of Soil
+                            </a>
+                        </td>
+                        <td scope="row" class="px-6 py-4">
+                            <a href="">
+                            109378492
+                            </a>
+                        </td>
+                        <td class="px-6 py-4">
+                            4
+                        </td>
+                        <td class="px-6 py-4">
+                            Pending
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    </div>
+</body>
+</html>
