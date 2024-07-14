@@ -10,7 +10,7 @@
 </head>
 <body class="bg-[#ebedf0]">
     {% include 'central/nav.html' %}
-    <div class=" overflow-hidden relative bg-white w-full gap-2 py-6 px-6 lg:px-12 mt-4 rounded-md flex justify-between items-center flex-wrap">
+    <div class="overflow-hidden relative bg-white w-full gap-2 py-6 px-6 lg:px-12 mt-4 rounded-md flex justify-between items-center flex-wrap">
         <div>
             <p class="text-xl font-medium">Publications</p>
             <p class="text-sm text-slate-600">Publication in IEEE, Elsevier, ACM & international Conferences indexed in Scopus/UGC Care journals/indexed Book chapters from reputed publishers</p>
@@ -21,7 +21,9 @@
                 <img src="{% static 'images/add.svg' %}" class="min-w-[20px] min-h-[20px]">
             </button>
         </div>
-        <img src="{% static 'images/shadow.svg' %}" class="absolute max-w-[300px] top-[-60px] right-[-50px] opacity-50">
+        <div class="absolute top-0 right-0 min-h-[100% bg-red-600]">
+            <img src="{% static 'images/shadow2.svg' %}" class="min-w-[100%] top-[-20px] right-[-100px] opacity-50">
+        </div>
     </div>
     <div class="w-full mt-4">
         <div class="relative max-w-[100%] min-h-full overflow-x-scroll mt-6 rounded-md bg-white px-4 lg:px-12">

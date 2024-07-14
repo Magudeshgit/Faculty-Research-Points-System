@@ -26,4 +26,5 @@ urlpatterns = [
     path('signin/', atv.signin),
     path('home/', ctv.home),
     path('publication/', ctv.publication),
+    path('publicationapplication/', ctv.publication_application),
 ]
