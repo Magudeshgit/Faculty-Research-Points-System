@@ -1,0 +1,29 @@
+{% load static %}
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Publication | Application {% endblock %}</title>
+    {% tailwind_css %}
+</head>
+<body class="bg-[#ebedf0]">
+    <div class="parent">
+        {% include 'central/nav.html' %}
+        <div class="overflow-hidden relative bg-white w-full gap-2 py-12 px-6 lg:px-12 mt-4 rounded-md flex flex-col justify-center items-center flex-wrap">
+            <div>
+                <a href="/" class="flex text-sm font-medium items-center">
+                    <img src="{% static 'images/arrow.svg' %}" alt="">
+                    {% block backtext %}Home{% endblock %}
+                </a>
+                <p class="text-xl font-medium mt-4">Application Submitted!</p>
+                <p class="text-sm text-slate-600 font-bold">Reference number: {{obj}}</p>
+                <p class="text-sm text-slate-600 mt-3">Your application has been successfully submitted for review, you can view the status of your application in pending proposals page.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/utils.js' %}"></script>
+</body>
+</html>

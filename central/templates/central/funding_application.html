@@ -1,0 +1,146 @@
+{% extends 'central/publication_application.html' %}
+{% load static %}
+{% block title %} Funding | Application {% endblock %}
+{% block header %} Application for Funded Projects{% endblock %}
+{% block content %} 
+    
+<form class="bg-white mt-4 p-6" method="POST">
+    {% csrf_token %}
+    <div class="space-y-12">
+      <div>
+        <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                <div class="sm:col-span-3">
+                    <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Title of project</label>
+                    <div class="mt-2 min-w-full">
+                      <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        <input required type="text" name="name" id="title" value="{{name}}" class="min-w-full block border-0 bg-transparent py-1.5 pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" >
+                      </div>
+                    </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                    <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Funding Agency Name</label>
+                    <div class="mt-2 min-w-full">
+                      <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        <input required type="text" name="agency" id="title" value="{{agency}}" class="min-w-full block border-0 bg-transparent py-1.5 pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" >
+                      </div>
+                    </div>
+                </div>
+
+        </div>
+
+      <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+          <div class="sm:col-span-3">
+              <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Type</label>
+              <div class="mt-2 min-w-full">
+                <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <select id="department" name="status" required aria-valuenow="{{status}}" class="fundingcategory block min-w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                    <option value="sanctioned">Sanctioned</option>
+                    <option value="granted">Granted</option>
+                </select>
+                </div>
+              </div>
+          </div>
+
+          <div class="sm:col-span-3">
+              <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Sanctioned/Quoted Amount</label>
+              <div class="mt-2 min-w-full">
+                <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input required type="number" name="amount" id="title" value="{{amount}}" class="min-w-full block border-0 bg-transparent py-1.5 pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" >
+                </div>
+              </div>
+          </div>
+
+      </div>
+      </div>
+
+      <div class="mt-4 grid-cols-1 hidden gap-x-6 gap-y-8 sm:grid-cols-6 fundingwrap">
+        <div class="sm:col-span-3">
+          <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Amount Received Till Now</label>
+          <div class="mt-2 min-w-full">
+            <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+              <input type="number" name="receivedamount" id="title" value="{{receivedamount}}" class="min-w-full block border-0 bg-transparent py-1.5 pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" >
+            </div>
+          </div>
+        </div>
+        <div class="sm:col-span-3">
+          <label for="uc" class="block text-sm font-medium leading-6 text-gray-900">Utilization Certificate Status</label>
+          <div class="mt-2 min-w-full">
+            <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+              <select id="uc" name="uc" aria-valuenow="{{uc}}" class="block min-w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                <option value="no">Not Submitted</option>
+                <option value="yes">Submitted</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+        <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 fieldswrap">
+          <div class="sm:col-span-3">
+            <label for="identification" class="block text-sm font-medium leading-6 text-gray-900">Expected Start date</label>
+            <div class="mt-2">
+              <input type="date" required name="startdate" id="identification" value="{{startdate}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+            </div>
+          </div>
+
+          <div class="sm:col-span-3">
+            <label for="identification" class="block text-sm font-medium leading-6 text-gray-900">Expected End date</label>
+            <div class="mt-2">
+              <input type="date" required name="enddate" id="identification" value="{{enddate}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+            </div>
+          </div>
+
+          <div class="sm:col-span-3">
+            <label for="number" class="block text-sm font-medium leading-6 text-gray-900">No of Staffs from MCET (specify count including yourself)</label>
+            <div class="mt-2">
+              <input id="number" required name="staffcount" type="number" value="{{staffcount}}" class="authorno block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ">
+            </div>
+          </div>
+
+          <div class="sm:col-span-3">
+            <label for="department" class="block text-sm font-medium leading-6 text-gray-900">Department</label>
+            <div class="mt-2">
+              <select id="department" name="department" required class="block min-w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                    <option value="Information Technology">Information Technology</option>
+                    <option value="Electronics and Electrical Engineering">Electronics and Electrical Engineering</option>
+                    <option value="Electronics and Communication Engineering">Electronics and Communication Engineering</option>
+                    <option value="Mechanical Engineering">Mechanical Engineering</option>
+                    <option value="Civil Engineering">Civil Engineering</option>
+                    <option value="Computer Science Engineering">Computer Science Engineering</option>
+                    <option value="Science and Humanities">Science and Humanities</option>
+                    <option value="Artificial Intelligence and Data Science">Artificial Intelligence and Data Science</option>
+              </select>
+            </div>
+        </div>
+
+          
+          <div class="authorwrap min-w-[100%] grid grid-cols-1 sm:col-span-3 lg:col-span-full col-start-1 gap-x-6 gap-y-8"></div>
+                          
+        </div>
+      </div>
+      <p class="text-red-600 text-sm">{{error}}</p>
+      <div>
+        <div class="mt-10 space-y-10">  
+          <fieldset>
+            <div class="space-y-6">
+              <div class="relative flex gap-x-3">
+                <div class="flex h-6 items-center">
+                  <input id="comments" name="comments" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
+                </div>
+                
+                <div class="text-sm leading-6">
+                  <p class="text-gray-800 font-semibold text-sm">I certify that the information I have provided in this form is true, complete, and accurate to the best of my knowledge.</p>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+      <div class="flex mt-6 items-center justify-start gap-x-6">
+        <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Submit</button>
+        <button type="button"  class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Submit and add more</button>
+      </div>
+    </div>
+  </form>
+{% endblock %}

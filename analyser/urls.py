@@ -24,7 +24,15 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     
     path('signin/', atv.signin),
-    path('home/', ctv.home),
+    path('', ctv.home),
+    path('submitted/<int:id>/', ctv.submitted, name='submitted'),
+    
     path('publication/', ctv.publication),
     path('publicationapplication/', ctv.publication_application),
+    
+    path('consultancy/', ctv.consultancies),
+    path('consultancyapplication/', ctv.consultancy_application),
+    
+    path('funding/', ctv.funding),
+    path('fundingapplication/', ctv.funding_application),
 ]

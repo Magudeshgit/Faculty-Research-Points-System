@@ -3,6 +3,9 @@
          <p class="text-xl font-bold">MG003DJCL</p>
     </div> 
     <div class="gap-6 hidden lg:flex">
+               {% if request.user.groups.first.name == 'Controller' %}
+                    <a href="/pending">Pending Approvals</a>
+               {% endif %}
          <a href="#">Pending Proposals</a>
          <a href="#">Staff Profile</a>
          <p class="font-medium underline">{{request.user}}</p>

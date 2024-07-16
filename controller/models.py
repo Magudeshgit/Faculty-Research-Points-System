@@ -17,6 +17,9 @@ class pending(models.Model):
     proposal = models.OneToOneField(publication, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now=True, editable=True)
     
+    hodapproval = models.BooleanField(verbose_name="HoD Approval Status", default=False, null=True)
+    Controller = models.BooleanField(verbose_name="Controller Approval Status", default=False, null=True)
+    
     def __str__(self):
         return str(self.proposal)
     

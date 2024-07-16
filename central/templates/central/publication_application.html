@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Publication | Application</title>
+    <title>{% block title %}Publication | Application {% endblock %}</title>
     {% tailwind_css %}
 </head>
 <body class="bg-[#ebedf0]">
@@ -13,17 +13,19 @@
         {% include 'central/nav.html' %}
         <div class="overflow-hidden relative bg-white w-full gap-2 py-6 px-6 lg:px-12 mt-4 rounded-md flex justify-between items-center flex-wrap">
             <div>
-                <a href="/home" class="flex text-sm font-medium items-center">
+                <a href="/" class="flex text-sm font-medium items-center">
                     <img src="{% static 'images/arrow.svg' %}" alt="">
-                    Back
+                    {% block backtext %}Back{% endblock %}
                 </a>
-                <p class="text-xl font-medium mt-4">Application for Publication</p>
-                <p class="text-sm text-slate-600">Kindly fill down the following details carefully and submit the form.</p>
+                <p class="text-xl font-medium mt-4">{% block header %}Application for Publication {% endblock %}</p>
+                <p class="text-sm text-slate-600">{% block subhead %}Kindly fill down the following details carefully and submit the form.{% endblock %}</p>
             </div>
             <div class="absolute top-0 right-0 min-h-[100% bg-red-600]">
                 <img src="{% static 'images/shadow2.svg' %}" class="min-w-[100%] top-[-20px] right-[-500px] opacity-50">
             </div>
         </div>
+
+        {% block content %}
         <form class="bg-white mt-4 p-6" method="POST">
             {% csrf_token %}
             <div class="space-y-12">
@@ -60,30 +62,54 @@
                   <div class="sm:col-span-3">
                     <label for="identification" class="block text-sm font-medium leading-6 text-gray-900">DOI/ISSN No</label>
                     <div class="mt-2">
-                      <input type="text" name="identification" id="identification" value="{{identification}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                      <input type="text" required name="identification" id="identification" value="{{identification}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                     </div>
                   </div>
           
                   <div class="sm:col-span-3">
                     <label for="url" class="block text-sm font-medium leading-6 text-gray-900">URL (optional)</label>
                     <div class="mt-2">
-                      <input type="url" name="url" id="url" autocomplete="family-name" value="{{url}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                      <input type="url" name="url" id="url" value="{{url}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                     </div>
                   </div>
           
                   <div class="sm:col-span-3">
-                    <label for="number" class="block text-sm font-medium leading-6 text-gray-900">No of Authors from MCET (specify count)</label>
+                    <label for="number" class="block text-sm font-medium leading-6 text-gray-900">No of Staffs from MCET (specify count including yourself)</label>
                     <div class="mt-2">
-                      <input id="number" name="authorcount" type="number" value="{{authorcount}}" class="authorno block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ">
+                      <input id="number" required name="authorcount" type="number" value="{{authorcount}}" class="authorno block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ">
                     </div>
                   </div>
 
                   <div class="sm:col-span-3">
                     <label for="guide" class="block text-sm font-medium leading-6 text-gray-900">Guide Faculty (Employee ID)</label>
                     <div class="mt-2">
-                      <input id="guide" name="guideid" type="number" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                      <input id="guide" required name="guideid" type="number" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                     </div>
                   </div>
+
+                  <div class="sm:col-span-3">
+                    <label for="department" class="block text-sm font-medium leading-6 text-gray-900">Department</label>
+                    <div class="mt-2">
+                      <select id="department" name="department" required class="block min-w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                            <option value="Information Technology">Information Technology</option>
+                            <option value="Electronics and Electrical Engineering">Electronics and Electrical Engineering</option>
+                            <option value="Electronics and Communication Engineering">Electronics and Communication Engineering</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            <option value="Civil Engineering">Civil Engineering</option>
+                            <option value="Computer Science Engineering">Computer Science Engineering</option>
+                            <option value="Science and Humanities">Science and Humanities</option>
+                            <option value="Artificial Intelligence and Data Science">Artificial Intelligence and Data Science</option>
+                      </select>
+                    </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                  <label for="date" class="block text-sm font-medium leading-6 text-gray-900">Date of Publication</label>
+                  <div class="mt-2">
+                    <input id="date" required name="date" type="date" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                  </div>
+                </div>
+
                   
                   <div class="authorwrap min-w-[100%] grid grid-cols-1 sm:col-span-3 lg:col-span-full col-start-1 gap-x-6 gap-y-8"></div>
                                   
@@ -96,7 +122,7 @@
                     <div class="space-y-6">
                       <div class="relative flex gap-x-3">
                         <div class="flex h-6 items-center">
-                          <input id="comments" required name="comments" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
+                          <input id="comments" name="comments" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
                         </div>
                         
                         <div class="text-sm leading-6">
@@ -109,38 +135,14 @@
               </div>
               <div class="flex mt-6 items-center justify-start gap-x-6">
                 <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Submit</button>
-                <button type="button" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Submit and add more</button>
+                <button type="button"  class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Submit and add more</button>
               </div>
             </div>
           </form>
+          {% endblock %}
           <!-- border-b border-gray-900/10 pb-12 -->
     </div>
-<script>
-    // <div class="sm:col-span-2 col-start-1">
-    const authorsno = document.querySelector('.authorno')
-    const fieldswrap = document.querySelector('.authorwrap')
-    console.log(fieldswrap)
 
-    authorsno.addEventListener('input', (e)=>{
-        console.log(e.target.value)
-        fieldswrap.innerHTML = ''
-        for (let index = 1; index < parseInt(e.target.value)+1; index++) {
-            let pd = document.createElement('div')
-            let lb = document.createElement('label')
-            let int = document.createElement('input')
-            pd.setAttribute('class', 'sm:col-span-3')
-            lb.setAttribute('for', 'author')
-            lb.setAttribute('class', 'block text-sm font-medium leading-6 text-gray-900')
-            lb.innerText = `Employee ID of Author ${index}`
-            int.setAttribute('id', 'author')
-            int.setAttribute('name', `authorid${index}`)
-            int.setAttribute('type', 'text')
-            int.setAttribute('class', 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6')
-            pd.append(lb,int)
-            fieldswrap.append(pd)
-        }
-            
-    })
-</script>
+    <script src="{% static 'js/utils.js' %}"></script>
 </body>
 </html>

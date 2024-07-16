@@ -4,5 +4,3 @@ from .models import *
 
 admin.site.site_header = "MG003DJCL"
 admin.site.register([criteria, pending])
-
-admin.site.unregister(Group)

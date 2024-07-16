@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import publication
+from .models import *
 
 
-admin.site.register([publication])
+admin.site.register([publication, consultancy])
