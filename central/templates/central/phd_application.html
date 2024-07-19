@@ -1,9 +1,10 @@
 {% extends 'central/publication_application.html' %}
 {% load static %}
-{% block title %} Consultancy | Application {% endblock %}
-{% block header %} Application for Consultancy{% endblock %}
-{% block backurl %} /consultancy {% endblock %}
+{% block title %} PhD | Application {% endblock %}
+{% block header %} Application for Current and Completed PhD Scholars and Their Guides.{% endblock %}
+{% block backurl %} /phd {% endblock %}
 {% block content %} 
+
 {% if submitted == True %}
 <div class="bg-white shadow-md px-4 py-6 flex flex-col absolute top-4 right-4 rounded-md successnotification">
   <p class="text-xl font-medium mt-4">Application Submitted!</p>
@@ -12,6 +13,7 @@
   <img src="{% static 'images/close.svg' %}" onclick="closingops()" alt="close" class="absolute top-2 right-2 cursor-pointer closebtn">
 </div>
 {% endif %}
+    
 <form class="bg-white mt-4 p-6" method="POST">
     {% csrf_token %}
     <div class="space-y-12">
@@ -21,45 +23,56 @@
         </div>
         <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <div class="sm:col-span-3">
-                    <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Name of the Consultancy</label>
+                    <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Domain</label>
                     <div class="mt-2 min-w-full">
                       <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                        <input required type="text" name="name" id="title" value="{{name}}" class="min-w-full block border-0 bg-transparent py-1.5 pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" >
+                        <input required type="text" name="domain" id="title" value="{{domain}}" class="min-w-full block border-0 bg-transparent py-1.5 pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" >
                       </div>
                     </div>
                 </div>
 
                 <div class="sm:col-span-3">
-                    <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Agency</label>
-                    <div class="mt-2 min-w-full">
-                      <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                        <input required type="text" name="agency" id="title" value="{{agency}}" class="min-w-full block border-0 bg-transparent py-1.5 pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" >
-                      </div>
+                  <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Type</label>
+                  <div class="mt-2 min-w-full">
+                    <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                      <select id="department" name="type" required aria-valuenow="{{category}}" class="fundingcategory block min-w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                        <option value="Guideship - ongoing">Guideship - ongoing</option>
+                        <option value="Guideship - completed">Guideship - completed</option>
+                        <option value="Scholar - ongoing">Scholar - ongoing</option>
+                        <option value="Scholar - completed">Scholar - completed</option>
+                    </select>
                     </div>
-                </div>
+                  </div>
+              </div>
 
         </div>
-      </div>
-  
-        <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 fieldswrap">
+
+      <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
           <div class="sm:col-span-3">
-            <label for="identification" class="block text-sm font-medium leading-6 text-gray-900">Start date</label>
+              <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Register No</label>
+              <div class="mt-2 min-w-full">
+                <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input required type="number" name="registerno" id="title" value="{{uniqueno}}" class="min-w-full block border-0 bg-transparent py-1.5 pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" >
+                </div>
+                <p class="text-sm text-red-500">{{iderror}}</p>
+              </div>
+          </div>
+          <div class="sm:col-span-3">
+            <label for="region" class="block text-sm font-medium leading-6 text-gray-900">Supervisor No</label>
             <div class="mt-2">
-              <input type="date" required name="startdate" id="identification" value="{{startdate}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+              <input type="text" required name="supervisorno" id="region" value="{{patentoffice}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
             </div>
           </div>
 
-          <div class="sm:col-span-3">
-            <label for="identification" class="block text-sm font-medium leading-6 text-gray-900">End date</label>
-            <div class="mt-2">
-              <input type="date" required name="enddate" id="identification" value="{{enddate}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-            </div>
-          </div>
+      </div>
+      </div>
   
+        <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 fieldswrap">
+
           <div class="sm:col-span-3">
-            <label for="number" class="block text-sm font-medium leading-6 text-gray-900">Cash Amount Received</label>
+            <label for="identification" class="block text-sm font-medium leading-6 text-gray-900">Date</label>
             <div class="mt-2">
-              <input id="number" required name="amount" type="number" value="{{amount}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ">
+              <input type="date" required name="date" id="identification" value="{{date}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
             </div>
           </div>
 
@@ -80,7 +93,15 @@
         </div>
 
         <div class="sm:col-span-3">
-          <label for="number" class="block text-sm font-medium leading-6 text-gray-900">No of Investigators (PI) from MCET (specify count including yourself)</label>
+          <label for="number" class="block text-sm font-medium leading-6 text-gray-900">Employee ID of Supervisor (if MCET)</label>
+          <div class="mt-2">
+            <input id="number" required name="supervisorid" type="text" value="{{staffcount}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ">
+          </div>
+          <p class="text-sm text-red-600">{{supervisorerror}}</p>
+        </div>
+
+        <div class="sm:col-span-3">
+          <label for="number" class="block text-sm font-medium leading-6 text-gray-900">No of Scholars from MCET (specify count including yourself)</label>
           <div class="mt-2">
             <input id="number" required name="staffcount" type="number" value="{{staffcount}}" class="authorno block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ">
           </div>

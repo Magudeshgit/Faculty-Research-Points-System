@@ -1,12 +1,12 @@
 {% extends 'central/publication.html' %}
-{% block title %} Consultancy {% endblock %}
+{% block title %} Funding {% endblock %}
 {% block header %}
-    <p class="text-xl font-medium mt-4">Consultancy</p>
-    <p class="text-sm text-slate-600">Consultancy and Funded Project – Sanctioned and Received </p>
+    <p class="text-xl font-medium mt-4">PhD Proposals</p>
+    <p class="text-sm text-slate-600">File your PhD proposals</p>
 {% endblock %}
 
 {% block addurl %}
-     /consultancyapplication
+     /phdapplication
 {% endblock %}
 
 {% block content %}
@@ -14,22 +14,22 @@
     <thead class="border-b text-gray-900 dark:text-gray-400">
         <tr>
             <th scope="col" class="px-6 py-3">
-                Name
+                Domain
             </th>
             <th scope="col" class="px-6 py-3">
-                Agency
+                Type
             </th>
             <th scope="col" class="px-6 py-3">
-                Startdate
+                Register No
             </th>
             <th scope="col" class="px-6 py-3">
-                Enddate
+                Date
             </th>
             <th scope="col" class="px-6 py-3">
-                Amount
+                Supervisor No
             </th>
             <th scope="col" class="px-6 py-3">
-                Department
+                Supervisor
             </th>
             <th scope="col" class="px-6 py-3">
                 Staffs
@@ -38,29 +38,28 @@
     </thead>
     <tbody>
         {% for object in objects %}
-        {% if object.category == 'consultancy' %}
         <tr class="border-b">
             <td scope="row" class="hover:underline px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                 <a href="">
-                {{object.name}}
+                {{object.domain}}
                 </a>
             </td>
             <td scope="row" class="px-6 py-4">
                 <a href="">
-                {{object.agency}}
+                {{object.type}}
                 </a>
             </td>
             <td class="px-6 py-4">
-                {{object.startdate}}
+                {{object.registerno}}
             </td>
             <td class="px-6 py-4">
-                {{object.enddate}}
+                {{object.date}}
             </td>
             <td class="px-6 py-4">
-                {{object.amount}}
+                {{object.supervisorno}}
             </td>
             <td class="px-6 py-4">
-                {{object.department}}
+                {{object.supervisor}}
             </td>
             <td class="px-6 py-4">
                 {% for staff in object.staffs.all %}
@@ -68,7 +67,6 @@
                 {% endfor %}
             </td>
         </tr>
-        {% endif %}
         {% endfor %}
     </tbody>
     </table>

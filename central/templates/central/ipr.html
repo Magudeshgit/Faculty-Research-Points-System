@@ -1,12 +1,12 @@
 {% extends 'central/publication.html' %}
-{% block title %} Consultancy {% endblock %}
+{% block title %} Funding {% endblock %}
 {% block header %}
-    <p class="text-xl font-medium mt-4">Consultancy</p>
-    <p class="text-sm text-slate-600">Consultancy and Funded Project – Sanctioned and Received </p>
+    <p class="text-xl font-medium mt-4">IPR Proposals</p>
+    <p class="text-sm text-slate-600">All IPR related documents including patents, design filing, copyright filing, trademarks registrations ,etc. </p>
 {% endblock %}
 
 {% block addurl %}
-     /consultancyapplication
+     /iprapplication
 {% endblock %}
 
 {% block content %}
@@ -17,20 +17,26 @@
                 Name
             </th>
             <th scope="col" class="px-6 py-3">
-                Agency
+                Category
             </th>
-            <th scope="col" class="px-6 py-3">
+            <!-- <th scope="col" class="px-6 py-3">
                 Startdate
             </th>
             <th scope="col" class="px-6 py-3">
                 Enddate
+            </th> -->
+            <th scope="col" class="px-6 py-3">
+                Unique No
             </th>
             <th scope="col" class="px-6 py-3">
-                Amount
+                Type
             </th>
             <th scope="col" class="px-6 py-3">
-                Department
+                Patent Office Region
             </th>
+            <!-- <th scope="col" class="px-6 py-3">
+                UC 
+            </th> -->
             <th scope="col" class="px-6 py-3">
                 Staffs
             </th>
@@ -38,29 +44,31 @@
     </thead>
     <tbody>
         {% for object in objects %}
-        {% if object.category == 'consultancy' %}
         <tr class="border-b">
             <td scope="row" class="hover:underline px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                 <a href="">
-                {{object.name}}
+                {{object.title}}
                 </a>
             </td>
             <td scope="row" class="px-6 py-4">
                 <a href="">
-                {{object.agency}}
+                {{object.category}}
                 </a>
             </td>
-            <td class="px-6 py-4">
+            <!-- <td class="px-6 py-4">
                 {{object.startdate}}
             </td>
             <td class="px-6 py-4">
                 {{object.enddate}}
+            </td> -->
+            <td class="px-6 py-4">
+                {{object.uniqueno}}
             </td>
             <td class="px-6 py-4">
-                {{object.amount}}
+                {{object.status}}
             </td>
             <td class="px-6 py-4">
-                {{object.department}}
+                {{object.patentoffice}}
             </td>
             <td class="px-6 py-4">
                 {% for staff in object.staffs.all %}
@@ -68,7 +76,6 @@
                 {% endfor %}
             </td>
         </tr>
-        {% endif %}
         {% endfor %}
     </tbody>
     </table>

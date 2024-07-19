@@ -35,4 +35,16 @@ urlpatterns = [
     
     path('funding/', ctv.funding),
     path('fundingapplication/', ctv.funding_application),
+    
+    path('ipr/', ctv.ipr),
+    path('iprapplication/', ctv.ipr_application),
+    
+    path('phd/', ctv.phd),
+    path('phdapplication/', ctv.phd_application),
+    
+    path('r1/', ctv.r1),
+    path('r1application/', ctv.r1_application),
+    
+    path('awards/', ctv.awards),
+    path('awardapplication/', ctv.awards_application),
 ]

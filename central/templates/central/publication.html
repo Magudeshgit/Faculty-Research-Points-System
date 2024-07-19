@@ -13,8 +13,12 @@
     {% include 'central/nav.html' %}
     <div class="overflow-hidden relative bg-white w-full gap-2 py-6 px-6 lg:px-12 mt-4 rounded-md flex justify-between items-center flex-wrap">
         <div>
+            <a href="/" class="flex text-sm font-medium items-center">
+                <img src="{% static 'images/arrow.svg' %}" alt="">
+                Home
+            </a>
             {% block header %}
-            <p class="text-xl font-medium">Publications</p>
+            <p class="text-xl font-medium mt-4">Publications</p>
             <p class="text-sm text-slate-600">Publication in IEEE, Elsevier, ACM & international Conferences indexed in Scopus/UGC Care journals/indexed Book chapters from reputed publishers</p>
             {% endblock %}
         </div>

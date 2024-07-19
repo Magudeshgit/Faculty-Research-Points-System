@@ -1,26 +1,22 @@
 const authorsno = document.querySelector('.authorno')
 const fieldswrap = document.querySelector('.authorwrap')
 
-const fundingcategory = document.querySelector('.fundingcategory')
-const fundingwrap = document.querySelector('.fundingwrap')
-console.log(fieldswrap)
-
 authorsno.addEventListener('input', (e)=>{
-  console.log(e.target.value)
     fieldswrap.innerHTML = ''
-    makefields(parseInt(e.target.value))
+    if (parseInt(e.target.value) <= 50)
+    {
+      makefields(parseInt(e.target.value))
+    }
+    else
+    {
+      e.target.value = ''
+    }
 })
 
-fundingcategory.addEventListener('input', (e)=>{
-  if (e.target.value === 'granted')
-  {
-    fundingwrap.style.display = 'grid'
-  }
-  else
-  {
-    fundingwrap.style.display = 'none'
-  }
-})
+function closingops (e){
+  const successnotification = document.querySelector('.successnotification')
+  successnotification.remove()
+}
 
 window.onload = () =>{
   if (authorsno.value != '')
