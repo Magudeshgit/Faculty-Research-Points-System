@@ -1,5 +1,19 @@
+from typing import Iterable
 from django.db import models
-from central.models import publication
+from authentication.models import staff
+from central.models import *
+
+centralmodels = {
+    'publication': publication,
+    'consultancy': consultancy,
+    'funding': consultancy,
+    'ipr': ipr,
+    'phd': phd,
+    'r1': r1,
+    'r2': r2,
+    'r3': r3,
+    'awards': awards
+}
 
 class criteria(models.Model):
     serial = models.CharField(unique=True, max_length=10, null=False)
@@ -13,16 +27,34 @@ class criteria(models.Model):
         verbose_name = "Rewarding Criteria"
         verbose_name_plural = "Rewarding Criterias"
         
-class pending(models.Model):
-    proposal = models.OneToOneField(publication, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now=True, editable=True)
-    
-    hodapproval = models.BooleanField(verbose_name="HoD Approval Status", default=False, null=True)
-    Controller = models.BooleanField(verbose_name="Controller Approval Status", default=False, null=True)
+class achievements(models.Model):
+    statuses = [
+        ('Not Approved', 'Not Approved'),
+        ('HoD Approved', 'HoD Approved'),
+        ('Controller Approved', 'Controller Approved')
+    ]
+    title = models.CharField(max_length=150)
+    staff = models.ManyToManyField(staff)
+    department = models.ForeignKey(department, on_delete=models.SET_NULL, null=True)
+    achievementid = models.PositiveIntegerField()
+    date = models.DateField()
+    category = models.ForeignKey('rewardcategory', on_delete=models.SET_NULL, null=True)
+    approvalstatus = models.CharField(max_length=50, choices=statuses, default='Not Approved')
     
     def __str__(self):
-        return str(self.proposal)
+        return self.title + ' - ' + self.category.name
     
     class Meta:
-        verbose_name = "Pending Proposal"
-        verbose_name_plural = "Pending Proposals"
+        verbose_name = "Achievement"
+        verbose_name_plural = "All Acheivements"
+        
+class rewardcategory(models.Model):
+    name = models.CharField(max_length=75)
+    criterias = models.ManyToManyField(criteria)
+    
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name = 'Reward Category'
+        verbose_name_plural = 'Reward Categories'

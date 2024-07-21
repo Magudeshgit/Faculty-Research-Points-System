@@ -1,13 +1,21 @@
 from django.db.models.signals import post_save
 from django.conf import settings
 from central.models import *
-from .models import pending
+from .models import *
+from django.core.exceptions import ObjectDoesNotExist
 
 
-def publication_received(sender, created, instance, **kwargs):
-    if created:
-        pending.objects.create(proposal=instance)
-        print("Publication saved!")
+def achievement_saved(sender, instance, **kwargs):
+    if kwargs['created']:
+        print('BYE')
+    else:
+        
+        obj = achievements.objects.get(achievementid=instance.id)
+        if instance.hodapproval:
+            obj.approvalstatus = 'HoD Approved'
+            obj.save()
+        if instance.controller:
+            obj.approvalstatus = 'Controller Approved'
+            obj.save()
     
-    
-post_save.connect(publication_received, sender=publication,weak=False)
+post_save.connect(achievement_saved, sender=publication)

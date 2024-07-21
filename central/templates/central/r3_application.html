@@ -1,0 +1,103 @@
+{% extends 'central/publication_application.html' %}
+{% load static %}
+{% block title %} Acted as a Resource Person {% endblock %}
+{% block header %} Acted as a Resource Person {% endblock %}
+{% block backurl %} /r3 {% endblock %}
+{% block content %} 
+
+{% if submitted == True %}
+<div class="bg-white shadow-md px-4 py-6 flex flex-col absolute top-4 right-4 rounded-md successnotification">
+  <p class="text-xl font-medium mt-4">Application Submitted!</p>
+  <p class="text-sm text-slate-600 font-bold">Reference number: {{submittedid}}</p>
+  <p class="text-sm text-slate-600 mt-3">Your application has been successfully submitted for review.</p>
+  <img src="{% static 'images/close.svg' %}" onclick="closingops()" alt="close" class="absolute top-2 right-2 cursor-pointer closebtn">
+</div>
+{% endif %}
+    
+<form class="bg-white mt-4 p-6" method="POST">
+    {% csrf_token %}
+    <div class="space-y-6">
+      <div>
+        <div class="text-sm leading-6">
+          <p class="text-red-600 font-semibold text-sm">{{errorhelp}}</p>
+        </div>
+        <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                <div class="sm:col-span-3">
+                    <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Institution/Industry Name</label>
+                    <div class="mt-2 min-w-full">
+                      <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        <input required type="text" name="location" id="title" value="{{title}}" class="min-w-full block border-0 bg-transparent py-1.5 pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" >
+                      </div>
+                    </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                  <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Category</label>
+                  <div class="mt-2 min-w-full">
+                    <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                      <select id="department" name="category" required aria-valuenow="{{category}}" class="fundingcategory block min-w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                        <option value="Reputed academics institutions abroad top NIRF">Reputed academics institutions abroad top NIRF</option>
+                        <option value="Industries">Industries</option>
+                        <option value="Developed Course modules on Swayam-NPTEL or Coursera (minimum: 1hr)">Developed Course modules on Swayam-NPTEL or Coursera (minimum: 1hr)</option>
+                    </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                  <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Mode</label>
+                  <div class="mt-2 min-w-full">
+                    <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                      <select id="department" name="mode" required aria-valuenow="{{category}}" class="fundingcategory block min-w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                        <option value="Offline">Offline</option>
+                        <option value="Online">Online</option>
+                        
+                    </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                  <label for="identification" class="block text-sm font-medium leading-6 text-gray-900">Date</label>
+                  <div class="mt-2">
+                    <input type="date" required name="date" id="identification" value="{{date}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                  </div>
+                </div>
+        </div>
+        <div class="sm:col-span-3 mt-6">
+          <label for="identification" class="block text-sm font-medium leading-6 text-gray-900">Purpose</label>
+          <div class="mt-2">
+            <input type="text" required name="purpose" id="identification" value="{{date}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+          </div>
+        </div>
+      </div>
+  
+      </div>
+      <p class="text-red-600 text-sm">{{error}}</p>
+      <div>
+        <div class="mt-10 space-y-10">  
+          <fieldset>
+            <div class="space-y-6">
+              <div class="relative flex gap-x-3">
+                <div class="flex h-6 items-center">
+                  <input id="comments" name="comments" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
+                </div>
+                
+                <div class="text-sm leading-6">
+                  <p class="text-gray-800 font-semibold text-sm">I certify that the information I have provided in this form is true, complete, and accurate to the best of my knowledge.</p>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+      <div class="flex mt-6 items-center justify-start gap-x-6">
+        <button type="submit" name="submissiontype" value="redirect" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Submit</button>
+        <button type="submit" name="submissiontype" value="submit" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5">Submit and add more</button>
+      </div>
+    </div>
+  </form>
+{% endblock %}
+
+{% block script %}
+{% endblock %}

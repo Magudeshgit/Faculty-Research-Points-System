@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="sm:col-span-3">
-                  <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Institution Category</label>
+                  <label for="title" class="block text-sm font-medium leading-6 text-gray-900">From</label>
                   <div class="mt-2 min-w-full">
                     <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                       <select id="department" name="institutiontype" required aria-valuenow="{{category}}" class="fundingcategory block min-w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="sm:col-span-3">
-                  <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Name of the Institution</label>
+                  <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Name of the Institution/Goverment Agency, etc</label>
                   <div class="mt-2 min-w-full">
                     <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                       <input required type="text" name="institution" id="title" value="{{institution}}" class="min-w-full block border-0 bg-transparent py-1.5 pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" >
@@ -64,32 +64,6 @@
               </div>
 
         </div>
-
-      <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">          
-        <div class="sm:col-span-3">
-          <label for="department" class="block text-sm font-medium leading-6 text-gray-900">Department</label>
-          <div class="mt-2">
-            <select id="department" name="department" required class="block min-w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                  <option value="Information Technology">Information Technology</option>
-                  <option value="Electronics and Electrical Engineering">Electronics and Electrical Engineering</option>
-                  <option value="Electronics and Communication Engineering">Electronics and Communication Engineering</option>
-                  <option value="Mechanical Engineering">Mechanical Engineering</option>
-                  <option value="Civil Engineering">Civil Engineering</option>
-                  <option value="Computer Science Engineering">Computer Science Engineering</option>
-                  <option value="Science and Humanities">Science and Humanities</option>
-                  <option value="Artificial Intelligence and Data Science">Artificial Intelligence and Data Science</option>
-            </select>
-          </div>
-      </div>
-
-      <div class="sm:col-span-3">
-        <label for="number" class="block text-sm font-medium leading-6 text-gray-900">No of Scholars from MCET (specify count including yourself)</label>
-        <div class="mt-2">
-          <input id="number" required name="staffcount" type="number" value="{{staffcount}}" class="authorno block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ">
-        </div>
-      </div>
-
-      </div>
       </div>
   
         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 fieldswrap">

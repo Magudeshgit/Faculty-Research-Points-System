@@ -1,105 +1,104 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from .models import publication as publ
-from .models import consultancy, ipr as _ipr, phd as _phd, r1 as _r1, awards as _awards
+from .models import consultancy, ipr as _ipr, phd as _phd, r1 as _r1, awards as _awards, r2 as _r2, r3 as _r3, publication as publ
+from controller.models import achievements, rewardcategory
 from authentication.models import staff, department as dept
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.db.models import Q
 
-@login_required(login_url='/signin')
+@login_required
 def home(request):
     return render(request, 'central/home.html')
 
-@login_required(login_url='/signin')
+@login_required
 def submitted(request, id):
     return render(request, 'central/submitted.html', {'obj': id})
 
 
 # Publication
-@login_required(login_url='/signin')
+@login_required
 def publication(request):
     publications = publ.objects.filter(authors=request.user)
     print(request.user.groups)
     return render(request, 'central/publication.html', {"publications": publications})
 
-@login_required(login_url='/signin')
+@login_required
 def publication_application(request):
-    context = {'error': '', 'title': '', 'index':'', 'identification': '', 'url': '', 'authorcount': '', 'submitted': False}
+    context = {'error': '', 'title': '', 'publication':'', 'identification': '', 'url': '', 'authorcount': '', 'submitted': False}
+    authorsobj = []
+    data = {}
+    staffobj = []
+    guide = None
+    formfields = ['title','publication', 'identification', 'url','date', 'staffcount']
     if request.method == 'POST':
-        
+        for field in formfields:
+            if field != 'staffcount':
+                data[field] = request.POST[field]
+            else:
+                if request.POST['guideid'] != '':
+                        guide = staff.objects.get(username=request.POST['guideid'])
+                try:
+                    for i in range(1,int(request.POST[field])+1):
+                        _username = request.POST['authorid' + str(i)]
+                        if request.POST['guideid'] == _username:
+                            print("WOah")
+                            context = {'error' : 'The Guide ID and Author IDs Cannot be same', 'errorhelp': "Kindly correct the errors below."}
+                            return render(request, 'central/publication_application.html', context)
+
+                        _staff = staff.objects.get(username=_username)
+                        staffobj.append(_staff)
+                except (ObjectDoesNotExist) as e:
+                    context = {
+                        'error': f'Specified Employee ID or Guide ID of staffs: {_username} is invalid or does not exist',
+                    }
+                    return render(request, 'central/publication_application.html', context)
+                
+        _department = request.POST['department']
         try:
-            print(request.POST)
-            title = request.POST['title']
-            index = request.POST['index']
-            identification = request.POST['identification']
-            url = request.POST['url']
-            authorcount= request.POST['authorcount']
-            guideid = request.POST['guideid']
-            department = request.POST['department']
-            date = request.POST['date']
-            authorsobj = []
-        except Exception as e:
-            print(e)
+            department = dept.objects.get(name = _department)
             
-        
-        try:
-            for i in range(1,int(authorcount)+1):
-                _username = request.POST['authorid' + str(i)]
-                author = staff.objects.get(username=_username)
-                authorsobj.append(author)
-            department = dept.objects.get(name = department)
-        except ObjectDoesNotExist:
-            context['error'] = f'Specified Employee ID of staffs: {_username} is invalid or does not exist'
-            context['errorhelp'] = 'Kindly correct the errors below.'
-            context['title'] = title
-            context['index'] = index
-            context['identification'] = identification
-            context['url'] = url
-            context['authorcount'] = authorcount
-            return render(request, 'central/publication_application.html', context)
-        print(authorsobj)
-        print(department)
-        
-        try:
-            paper = publ.objects.create(publication=index, 
-                                title=title,
-                                identification = identification,
-                                url=url,
-                                department=department,
-                                date=date
-                                )
-        
-            paper.authors.add(*authorsobj)
-            paper.save()
-        except Exception as e:
-            context['iderror'] = f'The specified DOI/ISSN No is already been registered by another staff member, kindly recheck.'
-            context['errorhelp'] = 'Kindly correct the errors below.'
-            context['title'] = title
-            context['index'] = index
-            context['identification'] = identification
-            context['url'] = url
-            context['authorcount'] = authorcount
+            obj = publ.objects.create(**data)
+            obj.authors.add(*staffobj)
+            obj.guide = guide
+            obj.department = department
+            
+            # Centralizing for Operation 2
+            rc = rewardcategory.objects.get(name='publication')
+            ach = achievements.objects.create(
+                title=data['title'], 
+                achievementid=obj.id,date=data['date'],
+                category=rc, department=department)
+            ach.staff.add(*staffobj)
+            ach.save()
+            obj.save()
+            
+                
+        except IntegrityError:
+            context = {
+                        'errorhelp': 'Kindly correct the errors below',
+                        'iderror': f'The specified DOI/ISSN No has already been registered',
+                    }
             return render(request, 'central/publication_application.html', context)
             
         if request.POST['submissiontype'] == 'submit':
             context['submitted'] = True
-            context['submittedid'] = paper.id
+            context['submittedid'] = obj.id
             return render(request, 'central/publication_application.html', context)
         else:
-            return redirect(reverse('submitted', kwargs={'id': paper.id}))
-    return render(request, 'central/publication_application.html', context)
+            return redirect(reverse('submitted', kwargs={'id': obj.id}))
+    return render(request, 'central/publication_application.html')
 
     # Consultancy
 
 # Consultancy
-@login_required(login_url='/signin')
+@login_required
 def consultancies(request):
     consultancies = consultancy.objects.filter(staffs=request.user, category="consultancy")
     return render(request, 'central/consultancy.html', {"objects": consultancies})
 
-@login_required(login_url='/signin')
+@login_required
 def consultancy_application(request):
     if request.method == 'POST':
         print(request.POST)
@@ -135,6 +134,17 @@ def consultancy_application(request):
             obj.staffs.add(*staffobj)
             obj.department = department
             obj.save()
+            
+            # Centralizing for Operation 2
+            rc = rewardcategory.objects.get(name='Consultancy')
+            ach = achievements.objects.create(
+                title=data['name'],achievementid=obj.id,
+                date=data['enddate'],category=rc,
+                department=department
+                )
+            ach.staff.add(*staffobj)
+            ach.save()
+            
         except IntegrityError:
             context = {
                         'errorhelp': f'The specified name of the consultancy has already been registered',
@@ -151,16 +161,15 @@ def consultancy_application(request):
     return render(request, 'central/consultancy_application.html')
 
 # Funding
-@login_required(login_url='/signin')
+@login_required
 def funding(request):
     fundings = consultancy.objects.filter(staffs=request.user, category='funding')
     print(fundings)
     return render(request, 'central/funding.html', {"objects": fundings})
 
-@login_required(login_url='/signin')
+@login_required
 def funding_application(request):
     if request.method == 'POST':
-        print(request.POST)
         context = {}
         data = {'category':'funding'}
         staffobj = []
@@ -201,6 +210,17 @@ def funding_application(request):
                 obj.status = request.POST['status']
                 obj.uc = True if request.POST['uc'] == 'yes'  else False
             obj.save()
+            
+            # Centralizing for Operation 2
+            rc = rewardcategory.objects.get(name='Funding')
+            ach = achievements.objects.create(
+                title=data['name'], achievementid = obj.id,
+                date=data['enddate'], category=rc,
+                department=department
+                )
+            ach.staff.add(*staffobj)
+            ach.save()
+            
         except IntegrityError:
             context = {
                 'errorhelp': f'The specified name of the funding has already been registered',
@@ -215,12 +235,12 @@ def funding_application(request):
     return render(request, 'central/funding_application.html')
 
 # IPR Related
-@login_required(login_url='/signin')
+@login_required
 def ipr(request):
     obj = _ipr.objects.filter(staffs = request.user)
     return render(request, 'central/ipr.html', {'objects':obj})
 
-@login_required(login_url='/signin')
+@login_required
 def ipr_application(request):
     context = {}
     if request.method == 'POST':
@@ -256,6 +276,15 @@ def ipr_application(request):
             obj.staffs.add(*staffobj)
             obj.department = department
             obj.save()
+            
+            # Centralizing for Operation 2
+            rc = rewardcategory.objects.get(name='IPR')
+            ach = achievements.objects.create(
+                title=data['title'], achievementid=obj.id,date=data['date'],
+                category=rc, department=department)
+            ach.staff.add(*staffobj)
+            ach.save()
+            
         except IntegrityError:
             context = {
                 'iderror': f'The specified Unique No is already been registered by another staff member, kindly recheck.',
@@ -271,12 +300,12 @@ def ipr_application(request):
     return render(request, 'central/ipr_application.html')
 
 # PhD Related
-@login_required(login_url='/signin')
+@login_required
 def phd(request):
     obj = _phd.objects.filter(Q(supervisor=request.user) | Q(staffs=request.user)).distinct()   
     return render(request, 'central/phd.html', {'objects': obj})
 
-@login_required(login_url='/signin')
+@login_required
 def phd_application(request):
     context = {}
     if request.method == 'POST':
@@ -307,6 +336,17 @@ def phd_application(request):
             obj.department = department
             obj.supervisor = supervisor
             obj.save()
+            
+            # Centralizing for Operation 2
+            rc = rewardcategory.objects.get(name='PhD')
+            ach = achievements.objects.create(
+                title=data['domain'], achievementid=obj.id,
+                date=data['date'],category=rc,
+                department=department
+                )
+            ach.staff.add(*staffobj)
+            ach.save()
+            
         except IntegrityError:
             context = {
                 'iderror': f'The specified Regiser No is already been registered, kindly recheck.',
@@ -331,13 +371,13 @@ def phd_application(request):
 
 
 # Research oriented STTP/FDP (NPTEL excluded)/ Seminar/Workshop attended (Physical mode & External only)
-@login_required(login_url='/signin')
+@login_required
 def r1(request):
     obj = _r1.objects.filter(staffs=request.user)
     return render(request, 'central/r1.html', {'objects': obj})
 
 # Start from r1_application:
-@login_required(login_url='/signin')
+@login_required
 def r1_application(request):
     if request.method == 'POST':
         context = {}
@@ -373,6 +413,15 @@ def r1_application(request):
             obj.staffs.add(*staffobj)
             obj.department = department
             obj.save()
+            
+            # Centralizing for Operation 2
+            rc = rewardcategory.objects.get(name='STTP/FDP')
+            ach = achievements.objects.create(title=data['title'], achievementid=obj.id,
+                                        date=data['date'],category=rc, 
+                                        department=department)
+            ach.staff.add(*staffobj)
+            ach.save()
+            
         except IntegrityError:
             context = {
                 'iderror': f'The specified Regiser No is already been registered, kindly recheck.',
@@ -396,57 +445,40 @@ def r1_application(request):
         
     return render(request, 'central/r1_application.html')
 
-@login_required(login_url='/signin')
+@login_required
 def awards(request):
     obj = _awards.objects.filter(staffs=request.user)
     return render(request, 'central/awards.html',{'objects':obj})
 
-@login_required(login_url='/signin')
+@login_required
 def awards_application(request):
     if request.method == 'POST':
         context = {}
         data = {}
-        staffobj = []
         
-        formfields = ['title', 'institution','institutiontype','date','staffcount']
+        formfields = ['title', 'institution','institutiontype','date']
         for field in formfields:
-            if field != 'staffcount':
-                data[field] = request.POST[field]
-            else:
-                try:
-                    for i in range(1,int(request.POST[field])+1):
-                        _username = request.POST['authorid' + str(i)]
-                        _staff = staff.objects.get(username=_username)
-                        staffobj.append(_staff)
-                except ObjectDoesNotExist:
-                    context = {
-                        'errorhelp' :'Kindly correct the errors below and recheck all the fields',
-                        'error': f'Specified Employee ID of staffs: {_username} is invalid or does not exist',
-                        'title': data['title'],
-                        'category': data['category'],
-                        'status': data['status'],
-                        'uniqueno': data['uniqueno'],
-                        'patentoffice': data['patentoffice'],
-                        'date': data['date'],
-                        'staffcount': request.POST['staffcount'],
-                    }
-                    return render(request, 'central/awards_application.html', context)
+            data[field] = request.POST[field]
                 
-        department = dept.objects.get(name = request.POST['department'])
         try:    
             obj = _awards.objects.create(**data)
-            obj.staffs.add(*staffobj)
-            obj.department = department
+            obj.staffs = request.user
+            obj.department = request.user.dept
             obj.save()
+            
+            # Centralizing for Operation 2
+            rc = rewardcategory.objects.get(name='Awards')
+            ach = achievements.objects.create(title=data['title'], achievementid=obj.id,
+                                              date=data['date'], category=rc, 
+                                              department=request.user.dept,
+                                              )
+            ach.staff.add(request.user)
+            ach.save()
+            
+            
         except IntegrityError:
             context = {
                 'iderror': f'The specified Regiser No is already been registered, kindly recheck.',
-                'errorhelp' :'Kindly correct the errors below.'
-                }
-            return render(request, 'central/awards_application.html', context)  
-        except ObjectDoesNotExist:
-            context = {
-                'supervisorerror': f'The specified Employee ID of supervisor is not valid or it does not exist.',
                 'errorhelp' :'Kindly correct the errors below.'
                 }
             return render(request, 'central/awards_application.html', context)  
@@ -460,3 +492,87 @@ def awards_application(request):
         
         
     return render(request, 'central/awards_application.html')
+
+# Research Related Course (Special Case: Department and staffs are automatically added from request object)
+@login_required
+def r2(request):
+    obj = _r2.objects.filter(staffs = request.user)
+    return render(request, 'central/r2.html', {'objects':obj})
+
+@login_required
+def r2_application(request):
+    if request.method == 'POST':
+        data = {}
+        context = {}
+        formfields = ['coursename', 'duration', 'mark', 'institution', 'certificateno', 'date']
+        for field in formfields:
+                data[field] = request.POST[field]
+        try:
+            obj = _r2.objects.create(**data)
+            obj.staffs = request.user
+            obj.department = request.user.dept
+            obj.save()
+            
+            rc = rewardcategory.objects.get(name='Research related Courses')
+            ach = achievements.objects.create(title=data['coursename'],achievementid=obj.id,
+                                        date=data['date'],category=rc)
+            ach.staff.add(request.user)
+            ach.save()
+            
+        except IntegrityError as e:
+            print(e)
+            context = {
+                'iderror': f'The specified Certificate No is already been registered, kindly recheck.',
+                'errorhelp' : 'Kindly correct the errors below.'
+                }
+            return render(request, 'central/r2_application.html', context)  
+        
+        if request.POST['submissiontype'] == 'submit':
+            context['submitted'] = True
+            context['submittedid'] = obj.id
+            return render(request, 'central/r2_application.html', context)
+        else:
+            return redirect(reverse('submitted', kwargs={'id': obj.id}))
+            
+    return render(request, 'central/r2_application.html')
+
+@login_required
+def r3(request):
+    obj = _r3.objects.filter(staffs = request.user)
+    return render(request, 'central/r3.html', {'objects': obj})
+
+@login_required
+def r3_application(request):
+    if request.method == 'POST':
+        data = {}
+        context = {}
+        formfields = ['location', 'category', 'mode', 'date', 'purpose']
+        for field in formfields:
+                data[field] = request.POST[field]
+        try:
+            obj = _r3.objects.create(**data)
+            obj.staffs = request.user
+            obj.department = request.user.dept
+            obj.save()
+            
+            rc = rewardcategory.objects.get(name='Acted as Resource person')
+            ach = achievements.objects.create(
+                title=data['location'], achievementid=obj.id,
+                date=data['date'],category=rc)
+            ach.staff.add(request.user)
+            ach.save()
+            
+        except Exception as e:
+            context = {
+                'iderror': f'The specified Certificate No is already been registered, kindly recheck.',
+                'errorhelp' : 'Kindly correct the errors below.'
+                }
+            return render(request, 'central/r3_application.html', context)  
+        
+        if request.POST['submissiontype'] == 'submit':
+            context['submitted'] = True
+            context['submittedid'] = obj.id
+            return render(request, 'central/r3_application.html', context)
+        else:
+            return redirect(reverse('submitted', kwargs={'id': obj.id}))
+    return render(request, 'central/r3_application.html')

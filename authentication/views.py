@@ -12,7 +12,7 @@ def signin(request):
         print(user)
         if user:
             login(request, user)
-            return redirect('/home/')
+            return redirect('/')
         else:
             context['error']  = "Your username or password is incorrect"
     return render(request, "authentication/signin.html", context)

@@ -1,0 +1,71 @@
+{% extends 'central/publication.html' %}
+{% block title %} Research related attendings {% endblock %}
+{% block header %}
+    <p class="text-xl font-medium mt-4">Research Related Courses</p>
+    <p class="text-sm text-slate-600">Research related NPTEL/Coursera Certifications (for every 4 week-5 points) </p>
+{% endblock %}
+
+{% block addurl %}
+     /r2application
+{% endblock %}
+
+{% block content %}
+<table class=" text-left min-h-full text-gray-500 bg-white dark:text-gray-400 rounded-md overflow-x-auto w-full">
+    <thead class="border-b text-gray-900 dark:text-gray-400">
+        <tr>
+            <th scope="col" class="px-6 py-3">
+                Title
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Institution
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Duration
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Mark
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Certificate No
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Department
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Staffs
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for object in objects %}
+        <tr class="border-b">
+            <td scope="row" class="hover:underline px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                <a href="">
+                {{object.coursename}}
+                </a>
+            </td>
+            <td scope="row" class="px-6 py-4">
+                <a href="">
+                {{object.institution}}
+                </a>
+            </td>
+            <td class="px-6 py-4">
+                {{object.duration}}
+            </td>
+            <td class="px-6 py-4">
+                {{object.mark}}
+            </td>
+            <td class="px-6 py-4">
+                {{object.certificateno}}
+            </td>
+            <td class="px-6 py-4">
+                {{request.user.dept}}
+            </td>
+            <td class="px-6 py-4">
+                {{request.user}}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+{% endblock %}

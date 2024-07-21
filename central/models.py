@@ -1,23 +1,24 @@
 from django.db import models
 from authentication.models import staff, department
 
+
 class publication(models.Model):
     publication = models.CharField(max_length=50) #Temproary
     title = models.CharField(max_length=100)
     identification = models.CharField(verbose_name='ISSN/DOI No',max_length=25, unique=True)
     url = models.CharField(verbose_name='URL', max_length=50, null=True)
+    guide = models.ForeignKey(staff, on_delete=models.SET_NULL, null=True, related_name='guide')
     authors = models.ManyToManyField(staff)
     department = models.ForeignKey(department, on_delete=models.SET_NULL, null=True)
     date = models.DateField(verbose_name='Date of publication')
     
-    # Guide Faculty Field Addition?
     
     # Verification process
     hodapproval = models.BooleanField(verbose_name="HoD Approval Status", default=False, null=True)
-    Controller = models.BooleanField(verbose_name="Controller Approval Status", default=False, null=True)
+    controller = models.BooleanField(verbose_name="Controller Approval Status", default=False, null=True)
     
     def __str__(self):
-        return self.title
+        return self.title 
     
 # Consultancy and fundings
 class consultancy(models.Model):
@@ -104,6 +105,10 @@ class phd(models.Model):
     staffs = models.ManyToManyField(staff)
     department = models.ForeignKey(department, on_delete=models.SET_NULL, null=True)
     
+    # Verification process
+    hodapproval = models.BooleanField(verbose_name="HoD Approval Status", default=False, null=True)
+    controller = models.BooleanField(verbose_name="Controller Approval Status", default=False, null=True)
+    
     def __str__(self):
         return self.domain
     
@@ -154,7 +159,10 @@ class awards(models.Model):
      institutiontype = models.CharField(max_length=150, choices=institutiontypes)
      date = models.DateField()
      department = models.ForeignKey(department, on_delete=models.SET_NULL, null=True)
-     staffs = models.ManyToManyField(staff)
+     staffs = models.ForeignKey(staff, on_delete=models.SET_NULL, null=True)
+     
+     hodapproval = models.BooleanField(verbose_name="HoD Approval Status", default=False, null=True)
+     controller = models.BooleanField(verbose_name="Controller Approval Status", default=False, null=True)
      
      def __str__(self):
          return self.title
@@ -162,3 +170,64 @@ class awards(models.Model):
      class Meta:
          verbose_name = 'Award'
          verbose_name_plural = 'Awards'
+         
+# Research Related Course (Special Case)
+class r2(models.Model):
+    durations = [
+        ("Succesfully completed 4 weeks", "Succesfully completed 4 weeks"),
+        ("Succesfully completed 8 weeks", "Succesfully completed 8 weeks"),
+        ("Succesfully completed 12 weeks", "Succesfully completed 12 weeks")
+    ]
+    coursename = models.CharField(max_length=50)
+    duration = models.CharField(max_length=50, choices=durations)
+    mark = models.PositiveIntegerField()
+    institution = models.CharField(max_length=75)
+    certificateno = models.CharField(max_length=35, unique=True)
+    staffs = models.ForeignKey(staff, on_delete=models.CASCADE, null=True)
+    department = models.ForeignKey(department, on_delete=models.SET_NULL, null=True)
+    date = models.DateField()
+    
+    # Verification process
+    hodapproval = models.BooleanField(verbose_name="HoD Approval Status", default=False, null=True)
+    controller = models.BooleanField(verbose_name="Controller Approval Status", default=False, null=True)
+    
+    
+    class Meta:
+        verbose_name = 'Research Related Course'
+        verbose_name_plural = 'Research Related Courses'
+    
+    def __str__(self):
+        return self.coursename
+
+# Acted as a resource person
+class r3(models.Model):
+    modes = [
+        ("Online", "Online"),
+        ("Offline", "Offline"),
+    ]
+    categories = [
+        ("Reputed academics institutions abroad top NIRF", "Reputed academics institutions abroad top NIRF etc"),
+        ("Industries", "Industries"),
+        ("Developed Course modules on Swayam-NPTEL or Coursera (minimum: 1hr)","Developed Course modules Swayam-NPTEL or Coursera (minimum: 1hr)")
+    ]
+    
+    mode = models.CharField(max_length=50, choices=modes)
+    category = models.CharField(max_length=100, choices=categories)
+    location = models.CharField(max_length=75)
+    purpose = models.TextField()
+    staffs = models.ForeignKey(staff, on_delete=models.CASCADE, null=True)
+    department = models.ForeignKey(department, on_delete=models.SET_NULL, null=True)
+    date = models.DateField()
+    
+    # Verification process
+    hodapproval = models.BooleanField(verbose_name="HoD Approval Status", default=False, null=True)
+    controller = models.BooleanField(verbose_name="Controller Approval Status", default=False, null=True)
+    
+    class Meta:
+        verbose_name = 'Acted as a Resource person'
+        verbose_name_plural = 'Acted as a Resource person'
+    
+    def __str__(self):
+        return self.location
+        
+        

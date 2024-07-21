@@ -1,0 +1,65 @@
+{% extends 'central/publication.html' %}
+{% block title %} Research related attendings {% endblock %}
+{% block header %}
+    <p class="text-xl font-medium mt-4">Acted as a Resource Person</p>
+    <p class="text-sm text-slate-600">Acted as a Resource Person in Industries, Reputed academics institutions abroad top NIRF or developed course modules for Coursera/NPTEL-Swayam</p>
+{% endblock %}
+
+{% block addurl %}
+     /r3application
+{% endblock %}
+
+{% block content %}
+<table class=" text-left min-h-full text-gray-500 bg-white dark:text-gray-400 rounded-md overflow-x-auto w-full">
+    <thead class="border-b text-gray-900 dark:text-gray-400">
+        <tr>
+            <th scope="col" class="px-6 py-3">
+                Industry/Institution Name
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Category
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Mode
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Date
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Department
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Staffs
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for object in objects %}
+        <tr class="border-b">
+            <td scope="row" class="hover:underline px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                <a href="">
+                {{object.location}}
+                </a>
+            </td>
+            <td scope="row" class="px-6 py-4">
+                <a href="">
+                {{object.category}}
+                </a>
+            </td>
+            <td class="px-6 py-4">
+                {{object.mode}}
+            </td>
+            <td class="px-6 py-4">
+                {{object.date}}
+            </td>
+            <td class="px-6 py-4">
+                {{request.user.dept}}
+            </td>
+            <td class="px-6 py-4">
+                {{request.user}}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+{% endblock %}

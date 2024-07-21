@@ -140,3 +140,5 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'authentication.staff'
+LOGIN_URL = '/signin'
+LOGIN_REDIRECT_URL = '/'

@@ -56,7 +56,7 @@
                         <div class="sm:col-span-3 mt-4">
                             <label for="country" class="block text-sm font-medium leading-6 text-gray-900">Ranking Index</label>
                             <div class="mt-2">
-                              <select id="country" name="index" required value="{{index}}" class="block max-w-full lg:min-w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                              <select id="country" name="publication" required value="{{index}}" class="block max-w-full lg:min-w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
                                 <option>Q1</option>
                                 <option>SCOPUS</option>
                                 <option>IEEE</option>
@@ -111,9 +111,16 @@
                 </div>
 
                 <div class="sm:col-span-3">
+                  <label for="number" class="block text-sm font-medium leading-6 text-gray-900">Employee ID of Guide (If any)</label>
+                  <div class="mt-2">
+                    <input id="number" name="guideid" type="text" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ">
+                  </div>
+                </div>
+
+                <div class="sm:col-span-3">
                   <label for="number" class="block text-sm font-medium leading-6 text-gray-900">No of Staffs from MCET (specify count including yourself)</label>
                   <div class="mt-2">
-                    <input id="number" required name="authorcount" type="number" maxlength="50" value="{{authorcount}}" class="authorno block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ">
+                    <input id="number" required name="staffcount" type="number" maxlength="50" value="{{authorcount}}" class="authorno block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ">
                   </div>
                 </div>
 
@@ -150,6 +157,8 @@
           <!-- border-b border-gray-900/10 pb-12 -->
     </div>
 
+    {% block script %}
     <script src="{% static 'js/utils.js' %}"></script>
+    {% endblock %}
 </body>
 </html>

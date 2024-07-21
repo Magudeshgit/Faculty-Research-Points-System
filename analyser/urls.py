@@ -19,13 +19,18 @@ from django.urls import path
 
 from authentication import views as atv
 from central import views as ctv
+from controller import views as btv
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     
+    # Authentication App
+    
     path('signin/', atv.signin),
     path('', ctv.home),
     path('submitted/<int:id>/', ctv.submitted, name='submitted'),
+    
+    # Central App
     
     path('publication/', ctv.publication),
     path('publicationapplication/', ctv.publication_application),
@@ -45,6 +50,19 @@ urlpatterns = [
     path('r1/', ctv.r1),
     path('r1application/', ctv.r1_application),
     
+    path('r2/', ctv.r2),
+    path('r2application/', ctv.r2_application),
+    
+    path('r3/', ctv.r3),
+    path('r3application/', ctv.r3_application),
+    
     path('awards/', ctv.awards),
     path('awardapplication/', ctv.awards_application),
+    
+    # Controller App
+    
+    path('approvalapplication/<str:category>/<int:id>/', btv.approvalapplication, name="approvalapplication"),
+    
+    path('pendingapprovals/', btv.pendingapprovals),
+    path('approve/<str:category>/<int:id>/', btv.approve, name='approve'),
 ]

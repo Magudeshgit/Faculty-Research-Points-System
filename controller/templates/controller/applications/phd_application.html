@@ -1,0 +1,121 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application information</title>
+    {% tailwind_css %}
+</head>
+<body class="bg-[#ebedf0]">
+  {% include 'central/nav.html' %}
+  <div class="bg-white min-w-full mt-6 ">
+    <div class="bg-white max-w-[90%] rounded-md p-6 mx-auto">
+        <div class="px-4 sm:px-0">
+          <h3 class="text-xl font-semibold leading-7 text-gray-900">Moderator Approval</h3>
+          <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">PhD Application form</p>
+        </div>
+        <div class="mt-6 border-t border-gray-100">
+          <dl class="divide-y divide-gray-100">
+            
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Reference No</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.id}}</dd>
+            </div>
+
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Title</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.domain}}</dd>
+            </div>  
+
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Category</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.type}}</dd>
+            </div>
+
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Register No</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.registerno}}</dd>
+            </div>
+
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Supervisor No</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.supervisorno}}</dd>
+            </div>
+
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Date</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.date}}</dd>
+            </div>
+
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Department</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.department}}</dd>
+            </div>
+
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Department</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.supervisor}}</dd>
+            </div>
+
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Staffs</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                {% for staff in object.staffs.all %}
+                  {{staff}},
+                {% endfor %}
+              </dd>
+            </div>
+
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Contact No</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                {{object.staffs.first.phone}}
+              </dd>
+            </div>
+
+
+
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">HoD Approval Status</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                {% if object.hodapproval %}
+                  Approved
+                {% else %}
+                  Not Approved
+                {% endif %}
+              </dd>
+            </div>
+
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Controller Approval Status</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                {% if object.Controller %}
+                  Approved
+                {% else %}
+                  Not Approved
+                {% endif %}
+              </dd> 
+            </div>
+
+          </dl>
+        </div>
+        <div class="mt-6 flex gap-2">
+          <a href="/">
+            <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#4f46e5] hover:bg-[#645cff] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                Approve 
+                <img src="{% static 'images/Check.svg' %}" class="min-w-[20px] min-h-[20px]">
+            </button>
+          </a>
+          <a href="/">
+            <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#cb4343] hover:bg-[#e65151] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                Disapprove
+                <img src="{% static 'images/Cross.svg' %}" class="min-w-[20px] min-h-[20px]">
+            </button>
+          </a>
+        </div>
+      </div>
+  </div>
+      
+</body>
+</html>
