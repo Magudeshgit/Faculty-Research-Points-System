@@ -1,0 +1,59 @@
+{% extends 'central/publication.html' %}
+{% block title %} Research related attendings {% endblock %}
+{% block header %}
+    <p class="text-xl font-medium mt-4">Domain Certifications - NPTEL</p>
+    <p class="text-sm text-slate-600">Domain Certificate from NPTEL - SWAYAM</p>
+{% endblock %}
+
+{% block addurl %}
+     /domaincertapplication
+{% endblock %}
+
+{% block content %}
+<table class=" text-left min-h-full text-gray-500 bg-white dark:text-gray-400 rounded-md overflow-x-auto w-full">
+    <thead class="border-b text-gray-900 dark:text-gray-400">
+        <tr>
+            <th scope="col" class="px-6 py-3">
+                Domain
+            </th>
+            <th scope="col" class="px-6 py-3">
+                No of Courses
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Course Mark
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Certificate No
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Date
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for object in objects %}
+        <tr class="border-b">
+            <td scope="row" class="hover:underline px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                <a href="">
+                {{object.domain}}
+                </a>
+            </td>
+            <td scope="row" class="px-6 py-4">
+                <a href="">
+                {{object.noc}}
+                </a>
+            </td>
+            <td class="px-6 py-4">
+                {{object.mark}}
+            </td>
+            <td class="px-6 py-4">
+                {{object.certificateno}}
+            </td>
+            <td class="px-6 py-4">
+                {{object.date}}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+{% endblock %}

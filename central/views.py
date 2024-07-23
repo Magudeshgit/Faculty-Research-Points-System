@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from .models import consultancy, ipr as _ipr, phd as _phd, r1 as _r1, awards as _awards, r2 as _r2, r3 as _r3, publication as publ
+from .models import consultancy, ipr as _ipr, phd as _phd, r1 as _r1, awards as _awards, r2 as _r2, r3 as _r3, publication as publ, funding as _funding, d1 as _d1
 from controller.models import achievements, rewardcategory
 from authentication.models import staff, department as dept
 from django.core.exceptions import ObjectDoesNotExist
@@ -10,7 +10,7 @@ from django.db.models import Q
 
 @login_required
 def home(request):
-    return render(request, 'central/home.html')
+    return render(request, 'central/home2.html')
 
 @login_required
 def submitted(request, id):
@@ -20,18 +20,17 @@ def submitted(request, id):
 # Publication
 @login_required
 def publication(request):
-    publications = publ.objects.filter(authors=request.user)
+    publications = publ.objects.filter(Q(authors=request.user) | Q(guide=request.user))
     print(request.user.groups)
     return render(request, 'central/publication.html', {"publications": publications})
 
 @login_required
 def publication_application(request):
-    context = {'error': '', 'title': '', 'publication':'', 'identification': '', 'url': '', 'authorcount': '', 'submitted': False}
-    authorsobj = []
+    context = {'error': '', 'title': '', 'publication':'', 'doi': '', 'issn': '' ,'url': '', 'authorcount': '', 'submitted': False}
     data = {}
     staffobj = []
     guide = None
-    formfields = ['title','publication', 'identification', 'url','date', 'staffcount']
+    formfields = ['title','publication', 'doi', 'issn', 'url','date', 'staffcount']
     if request.method == 'POST':
         for field in formfields:
             if field != 'staffcount':
@@ -51,6 +50,7 @@ def publication_application(request):
                         staffobj.append(_staff)
                 except (ObjectDoesNotExist) as e:
                     context = {
+                        'errorhelp': 'Kindly correct the errors below',
                         'error': f'Specified Employee ID or Guide ID of staffs: {_username} is invalid or does not exist',
                     }
                     return render(request, 'central/publication_application.html', context)
@@ -66,11 +66,15 @@ def publication_application(request):
             
             # Centralizing for Operation 2
             rc = rewardcategory.objects.get(name='publication')
+            
             ach = achievements.objects.create(
                 title=data['title'], 
                 achievementid=obj.id,date=data['date'],
                 category=rc, department=department)
             ach.staff.add(*staffobj)
+            # Intentionally Saving macro(consultancy) object after micro(acheievement) object because, 
+            # it internally triggers a signal to the micro object which in turn requires 
+            # the macro object to saved first.
             ach.save()
             obj.save()
             
@@ -78,7 +82,7 @@ def publication_application(request):
         except IntegrityError:
             context = {
                         'errorhelp': 'Kindly correct the errors below',
-                        'iderror': f'The specified DOI/ISSN No has already been registered',
+                        'iderror': f'The specified DOI or ISSN No has already been registered',
                     }
             return render(request, 'central/publication_application.html', context)
             
@@ -95,7 +99,7 @@ def publication_application(request):
 # Consultancy
 @login_required
 def consultancies(request):
-    consultancies = consultancy.objects.filter(staffs=request.user, category="consultancy")
+    consultancies = consultancy.objects.filter(staffs=request.user)
     return render(request, 'central/consultancy.html', {"objects": consultancies})
 
 @login_required
@@ -103,7 +107,7 @@ def consultancy_application(request):
     if request.method == 'POST':
         print(request.POST)
         context = {}
-        data = {'category':'consultancy'}
+        data = {}
         staffobj = []
         formfields = ['name', 'agency', 'startdate', 'enddate', 'amount', 'staffcount']
         for field in formfields:
@@ -133,10 +137,9 @@ def consultancy_application(request):
             obj = consultancy.objects.create(**data)
             obj.staffs.add(*staffobj)
             obj.department = department
-            obj.save()
             
             # Centralizing for Operation 2
-            rc = rewardcategory.objects.get(name='Consultancy')
+            rc = rewardcategory.objects.get(name='consultancy')
             ach = achievements.objects.create(
                 title=data['name'],achievementid=obj.id,
                 date=data['enddate'],category=rc,
@@ -144,6 +147,10 @@ def consultancy_application(request):
                 )
             ach.staff.add(*staffobj)
             ach.save()
+            # Intentionally Saving macro(consultancy) object after micro(acheievement) object because, 
+            # it internally triggers a signal to the micro object which in turn requires 
+            # the macro object to saved first.
+            obj.save()
             
         except IntegrityError:
             context = {
@@ -163,15 +170,14 @@ def consultancy_application(request):
 # Funding
 @login_required
 def funding(request):
-    fundings = consultancy.objects.filter(staffs=request.user, category='funding')
-    print(fundings)
+    fundings = _funding.objects.filter(staffs=request.user)
     return render(request, 'central/funding.html', {"objects": fundings})
 
 @login_required
 def funding_application(request):
     if request.method == 'POST':
         context = {}
-        data = {'category':'funding'}
+        data = {}
         staffobj = []
         formfields = ['name', 'agency', 'startdate', 'enddate', 'amount', 'status' ,'staffcount']
         for field in formfields:
@@ -202,24 +208,25 @@ def funding_application(request):
         department = dept.objects.get(name = _department)
         
         try:    
-            obj = consultancy.objects.create(**data)
+            obj = _funding.objects.create(**data)
             obj.staffs.add(*staffobj)
             obj.department = department
             if request.POST['status'] == 'granted':
                 obj.receivedamount = request.POST['receivedamount']
                 obj.status = request.POST['status']
                 obj.uc = True if request.POST['uc'] == 'yes'  else False
-            obj.save()
             
             # Centralizing for Operation 2
-            rc = rewardcategory.objects.get(name='Funding')
+            rc = rewardcategory.objects.get(name='funding')
             ach = achievements.objects.create(
                 title=data['name'], achievementid = obj.id,
                 date=data['enddate'], category=rc,
                 department=department
                 )
             ach.staff.add(*staffobj)
+            
             ach.save()
+            obj.save()
             
         except IntegrityError:
             context = {
@@ -275,15 +282,16 @@ def ipr_application(request):
             obj = _ipr.objects.create(**data)
             obj.staffs.add(*staffobj)
             obj.department = department
-            obj.save()
             
             # Centralizing for Operation 2
-            rc = rewardcategory.objects.get(name='IPR')
+            rc = rewardcategory.objects.get(name='ipr')
             ach = achievements.objects.create(
                 title=data['title'], achievementid=obj.id,date=data['date'],
                 category=rc, department=department)
             ach.staff.add(*staffobj)
+            
             ach.save()
+            obj.save()
             
         except IntegrityError:
             context = {
@@ -335,17 +343,20 @@ def phd_application(request):
             obj.staffs.add(*staffobj)
             obj.department = department
             obj.supervisor = supervisor
-            obj.save()
+            
             
             # Centralizing for Operation 2
-            rc = rewardcategory.objects.get(name='PhD')
+            rc = rewardcategory.objects.get(name='phd')
+            
             ach = achievements.objects.create(
                 title=data['domain'], achievementid=obj.id,
                 date=data['date'],category=rc,
                 department=department
                 )
             ach.staff.add(*staffobj)
+            
             ach.save()
+            obj.save()
             
         except IntegrityError:
             context = {
@@ -412,15 +423,17 @@ def r1_application(request):
             obj = _r1.objects.create(**data)
             obj.staffs.add(*staffobj)
             obj.department = department
-            obj.save()
             
             # Centralizing for Operation 2
-            rc = rewardcategory.objects.get(name='STTP/FDP')
+            rc = rewardcategory.objects.get(name='r1')
+            
             ach = achievements.objects.create(title=data['title'], achievementid=obj.id,
                                         date=data['date'],category=rc, 
                                         department=department)
             ach.staff.add(*staffobj)
+            
             ach.save()
+            obj.save()
             
         except IntegrityError:
             context = {
@@ -464,16 +477,19 @@ def awards_application(request):
             obj = _awards.objects.create(**data)
             obj.staffs = request.user
             obj.department = request.user.dept
-            obj.save()
+
             
             # Centralizing for Operation 2
-            rc = rewardcategory.objects.get(name='Awards')
+            rc = rewardcategory.objects.get(name='awards')
+            
             ach = achievements.objects.create(title=data['title'], achievementid=obj.id,
                                               date=data['date'], category=rc, 
                                               department=request.user.dept,
                                               )
             ach.staff.add(request.user)
+            
             ach.save()
+            obj.save()
             
             
         except IntegrityError:
@@ -511,13 +527,18 @@ def r2_application(request):
             obj = _r2.objects.create(**data)
             obj.staffs = request.user
             obj.department = request.user.dept
-            obj.save()
             
-            rc = rewardcategory.objects.get(name='Research related Courses')
-            ach = achievements.objects.create(title=data['coursename'],achievementid=obj.id,
-                                        date=data['date'],category=rc)
+            
+            rc = rewardcategory.objects.get(name='r2')
+            ach = achievements.objects.create(
+                title=data['coursename'],achievementid=obj.id,
+                date=data['date'],category=rc,
+                department=request.user.dept
+                )
             ach.staff.add(request.user)
+            
             ach.save()
+            obj.save()
             
         except IntegrityError as e:
             print(e)
@@ -553,14 +574,17 @@ def r3_application(request):
             obj = _r3.objects.create(**data)
             obj.staffs = request.user
             obj.department = request.user.dept
-            obj.save()
             
-            rc = rewardcategory.objects.get(name='Acted as Resource person')
+            rc = rewardcategory.objects.get(name='r3')
             ach = achievements.objects.create(
                 title=data['location'], achievementid=obj.id,
-                date=data['date'],category=rc)
+                date=data['date'],category=rc,
+                department=request.user.dept
+                )
             ach.staff.add(request.user)
+            
             ach.save()
+            obj.save()
             
         except Exception as e:
             context = {
@@ -576,3 +600,46 @@ def r3_application(request):
         else:
             return redirect(reverse('submitted', kwargs={'id': obj.id}))
     return render(request, 'central/r3_application.html')
+def domaincertifications(request):
+    obj = _d1.objects.filter(staffs=request.user)
+    return render(request, 'central/d1.html', {'objects':obj})
+def domaincert_application(request):
+    if request.method=='POST':
+        data = {}
+        context = {}
+        formfields = ['domain', 'noc','certificateno', 'date','mark']
+        
+        for field in formfields:
+                data[field] = request.POST[field]
+                
+        try:
+            obj = _d1.objects.create(**data)
+            obj.staffs = request.user
+            obj.department = request.user.dept
+            
+            rc = rewardcategory.objects.get(name='d1')
+            ach = achievements.objects.create(
+                title=data['domain'], achievementid=obj.id,
+                date=data['date'],category=rc,
+                department=request.user.dept
+                )
+            ach.staff.add(request.user)
+            
+            ach.save()
+            obj.save()
+            
+        except Exception as e:
+            context = {
+                'iderror': f'The specified Certificate No is already been registered, kindly recheck.',
+                'errorhelp' : 'Kindly correct the errors below.'
+                }
+            return render(request, 'central/r3_application.html', context) 
+        
+        if request.POST['submissiontype'] == 'submit':
+            context['submitted'] = True
+            context['submittedid'] = obj.id
+            return render(request, 'central/r3_application.html', context)
+        else:
+            return redirect(reverse('submitted', kwargs={'id': obj.id}))
+        
+    return render(request, 'central/domaincert_application.html')

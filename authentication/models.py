@@ -10,10 +10,9 @@ class department(models.Model):
         return self.name
     
 class staff(AbstractUser):
-    dept = models.ForeignKey(department, on_delete=models.CASCADE)
+    dept = models.ForeignKey(department, on_delete=models.CASCADE, null=True, blank=True)
     designation = models.CharField(max_length=20)
     phone = models.CharField(max_length=20)
-    designation = models.CharField(max_length=20)
     
     def __str__(self):
         return self.username

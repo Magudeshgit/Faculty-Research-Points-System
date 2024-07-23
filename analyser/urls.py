@@ -27,11 +27,13 @@ urlpatterns = [
     # Authentication App
     
     path('signin/', atv.signin),
-    path('', ctv.home),
-    path('submitted/<int:id>/', ctv.submitted, name='submitted'),
+    path('profile/', atv.profile),
+    path('changepassword/', atv.change_password),
+    path('logout/', atv._logout),
     
     # Central App
     
+    path('', ctv.home),
     path('publication/', ctv.publication),
     path('publicationapplication/', ctv.publication_application),
     
@@ -58,6 +60,11 @@ urlpatterns = [
     
     path('awards/', ctv.awards),
     path('awardapplication/', ctv.awards_application),
+    
+    path('domaincertifications/', ctv.domaincertifications),
+    path('domaincertapplication/', ctv.domaincert_application),
+    
+    path('submitted/<int:id>/', ctv.submitted, name='submitted'),
     
     # Controller App
     

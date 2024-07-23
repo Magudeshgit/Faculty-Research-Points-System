@@ -48,7 +48,13 @@
                             Ranking index
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            DOI/URL/ISSN
+                            DOI
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            ISSN
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            URL
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Authors
@@ -73,7 +79,13 @@
                             </a>
                         </td>
                         <td class="px-6 py-4">
-                            {{publication.identification}}
+                            {{publication.issn}}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{publication.doi}}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{publication.url}}
                         </td>
                         <td class="px-6 py-4">
                             {% for author in publication.authors.all %}
@@ -81,7 +93,11 @@
                             {% endfor %}
                         </td>
                         <td class="px-6 py-4">
-                            {{publication.Controller}}
+                            {% if publication.controller %}
+                                Approved
+                            {% else %}
+                                Not Approved
+                            {% endif %}
                         </td>
                     </tr>
 

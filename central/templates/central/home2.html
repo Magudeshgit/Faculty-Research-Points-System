@@ -1,0 +1,166 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    {% tailwind_css %}
+</head>
+<body class="">
+    {% include 'central/nav.html' %}
+    <div class="px-6 py-3">
+        <p class="text-2xl font-semibold">Dashboard</p>
+        <div class="mt-4 flex gap-4 min-w-full flex-wrap lg:flex-nowrap">
+
+            <div class="flex flex-col shadow-sm w-full border-[1px] border-gray-200 p-4 rounded-md">
+                <p class="text-gray-400 text-sm">Your Score</p>
+                <p class="font-medium text-gray-950 text-2xl">450</p>
+            </div>
+
+            <div class="flex flex-col w-full shadow-sm border-[1px] border-gray-200 p-4 rounded-md">
+                <p class="text-gray-400 text-sm">Pending Proposals</p>
+                <p class="font-medium text-gray-950 text-2xl">450</p>
+            </div>
+
+            <div class="flex flex-col w-full shadow-sm border-[1px] border-gray-200 p-4 rounded-md">
+                <p class="text-gray-400 text-sm">No of achievements</p>
+                <p class="font-medium text-gray-950 text-2xl">450</p>
+            </div>
+
+        </div>
+        <!-- Top Categories -->
+        <div>
+            <span class="inline-flex items-center mt-6 rounded-2xl bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Top Categories</span>
+            <div class="mt-8 flex gap-x-6 gap-y-8 flex-wrap">
+                <a href="/publication" class="p-2 hover:bg-gray-50 transition-colors cursor-pointer rounded-md">
+                    <div class="flex items-center gap-2">
+                        <div class="flex">
+                            <img src="{% static 'images/homepage/publication.svg' %}" class="min-w-[60px] min-h-[60px]">
+                        </div>
+
+                        <div class="flex flex-col">
+                            <p class="font-medium">Publications</p>
+                            <p class="font-normal text-sm text-gray-400">Publications in top indexed journals, such as Q1, Scopus, Elseiver, etc.</p> 
+                        </div>
+                    </div>
+                </a>
+
+                <a href="/phd" class="p-2 hover:bg-gray-50 transition-colors cursor-pointer rounded-md">
+                <div class="flex items-center gap-2">
+                    <div>
+                        <img src="{% static 'images/homepage/phd.svg' %}" class="min-w-[60px] min-h-[60px]">
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="font-medium">PhD</p>
+                        <p class="font-normal text-sm text-gray-400">Publications in top indexed journals, such as Q1, Scopus, Elseiver, etc.</p> 
+                    </div>
+                </div>
+                </a>
+
+                <a href="/awards" class="p-2 hover:bg-gray-50 transition-colors cursor-pointer rounded-md">
+                <div class="flex items-center gap-2">
+                    <div>
+                        <img src="{% static 'images/homepage/awards.svg' %}" class="min-w-[60px] min-h-[60px]">
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="font-medium">Awards</p>
+                        <p class="font-normal text-sm text-gray-400">Publications in top indexed journals, such as Q1, Scopus, Elseiver, etc.</p> 
+                    </div>
+                </div>
+                </a>
+                
+                <a href="/ipr" class="p-2 hover:bg-gray-50 transition-colors cursor-pointer rounded-md">
+                <div class="flex items-center gap-2">
+                    <div>
+                        <img src="{% static 'images/homepage/ipr.svg' %}" class="min-w-[60px] min-h-[60px]">
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="font-medium">IPR</p>
+                        <p class="font-normal text-sm text-gray-400">Publications in top indexed journals, such as Q1, Scopus, Elseiver, etc.</p> 
+                    </div>
+                </div>
+                </a>
+            </div>
+        </div>
+        <!-- All Categories -->
+        <div>
+            <span class="inline-flex items-center mt-12 rounded-2xl bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">Other Categories</span>
+            <div class="mt-4 flex gap-x-6 gap-y-8 flex-wrap">
+                <a href="/r1" class="p-2 hover:bg-gray-50 transition-colors cursor-pointer rounded-md">
+                <div class="flex items-center gap-2">
+                    <div class="flex">
+                        <img src="{% static 'images/homepage/sttp.svg' %}" class="min-w-[60px] min-h-[60px]">
+                    </div>
+
+                    <div class="flex flex-col">
+                        <p class="font-medium">Research oriented STTP/FDP</p>
+                        <p class="font-normal text-sm text-gray-400">Publications in top indexed journals, such as Q1, Scopus, Elseiver, etc.</p> 
+                    </div>
+                </div>
+                </a>
+                
+                <a href="/consultancy" class="p-2 hover:bg-gray-50 transition-colors cursor-pointer rounded-md">
+                <div class="flex items-center gap-2">
+                    <div>
+                        <img src="{% static 'images/homepage/consultancy.svg' %}" class="min-w-[60px] min-h-[60px]">
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="font-medium">Consultancy</p>
+                        <p class="font-normal text-sm text-gray-400">Publications in top indexed journals, such as Q1, Scopus, Elseiver, etc.</p> 
+                    </div>
+                </div>
+                </a>
+
+                <a href="/funding" class="p-2 hover:bg-gray-50 transition-colors cursor-pointer rounded-md">
+                    <div class="flex items-center gap-2">
+                        <div>
+                            <img src="{% static 'images/homepage/funding.svg' %}" class="min-w-[60px] min-h-[60px]">
+                        </div>
+                        <div class="flex flex-col">
+                            <p class="font-medium">Funded Projects</p>
+                            <p class="font-normal text-sm text-gray-400">Publications in top indexed journals, such as Q1, Scopus, Elseiver, etc.</p> 
+                        </div>
+                    </div>
+                    </a>
+                
+                <a href="/r3" class="p-2 hover:bg-gray-50 transition-colors cursor-pointer rounded-md">
+                <div class="flex items-center gap-2">
+                    <div>
+                        <img src="{% static 'images/homepage/resourceperson.svg' %}" class="min-w-[60px] min-h-[60px]">
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="font-medium">Acted as a Resource person</p>
+                        <p class="font-normal text-sm text-gray-400">Publications in top indexed journals, such as Q1, Scopus, Elseiver, etc.</p> 
+                    </div>
+                </div>
+                </a>
+
+                <a href="/r2" class="p-2 hover:bg-gray-50 transition-colors cursor-pointer rounded-md">
+                <div class="flex items-center gap-2">
+                    <div>
+                        <img src="{% static 'images/homepage/rrc.svg' %}" class="min-w-[60px] min-h-[60px]">
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="font-medium">Research related Course Certifications</p>
+                        <p class="font-normal text-sm text-gray-400">Publications in top indexed journals, such as Q1, Scopus, Elseiver, etc.</p> 
+                    </div>
+                </div>
+                </a>
+
+                <a href="/" class="p-2 hover:bg-gray-50 transition-colors cursor-pointer rounded-md">
+                    <div class="flex items-center gap-2">
+                        <div>
+                            <img src="{% static 'images/homepage/domain.svg' %}" class="min-w-[60px] min-h-[60px]">
+                        </div>
+                        <div class="flex flex-col">
+                            <p class="font-medium">Domain Certifications (NPTEL)</p>
+                            <p class="font-normal text-sm text-gray-400">Publications in top indexed journals, such as Q1, Scopus, Elseiver, etc.</p> 
+                        </div>
+                    </div>
+                    </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

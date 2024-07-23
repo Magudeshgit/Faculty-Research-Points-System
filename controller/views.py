@@ -3,19 +3,21 @@ from central.models import *
 from .models import *
 from .decorator import is_moderator
 from django.db.models import Q
+from django.contrib import messages
 
 # Dependency function
 # Note: Variable names are file names changing them will cause template not found error
 centralmodels = {
     'publication': publication,
     'consultancy': consultancy,
-    'funding': consultancy,
+    'funding': funding,
     'ipr': ipr,
     'phd': phd,
     'r1': r1,
     'r2': r2,
     'r3': r3,
-    'awards': awards
+    'awards': awards,
+    'd1': d1
 }
 
 @is_moderator
@@ -40,4 +42,5 @@ def approve(request, category, id):
     elif request.user.groups.filter(name='Controller').exists():
         obj.controller = True
     obj.save()
+    messages.success(request, 'Proposal Approved!')
     return redirect('/pendingapprovals')

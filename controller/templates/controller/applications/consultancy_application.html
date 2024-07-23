@@ -12,7 +12,7 @@
   <div class="bg-white min-w-full mt-6 ">
     <div class="bg-white max-w-[90%] rounded-md p-6 mx-auto">
         <div class="px-4 sm:px-0">
-          <h3 class="text-xl font-semibold leading-7 text-gray-900">Controller Approval</h3>
+          <h3 class="text-xl font-semibold leading-7 text-gray-900">{{request.user.groups.first}} Approval</h3>
           <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Consultancy Application form</p>
         </div>
         <div class="mt-6 border-t border-gray-100">
@@ -25,22 +25,27 @@
 
             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt class="text-sm font-medium leading-6 text-gray-900">Title</dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.title}}</dd>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.name}}</dd>
             </div>
 
             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">ISSN/DOI No</dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.identification}}</dd>
+              <dt class="text-sm font-medium leading-6 text-gray-900">Agency</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.agency}}</dd>
             </div>
 
             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">URL</dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.url}}</dd>
+              <dt class="text-sm font-medium leading-6 text-gray-900">Start Date</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.startdate}}</dd>
             </div>
 
             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">Guide</dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.guide}}</dd>
+              <dt class="text-sm font-medium leading-6 text-gray-900">End Date</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.endate}}</dd>
+            </div>
+
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Amount</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.amount}}</dd>
             </div>
 
             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -49,15 +54,10 @@
             </div>
 
             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">Date of Publication</dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.date}}</dd>
-            </div>
-
-            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt class="text-sm font-medium leading-6 text-gray-900">Staffs</dt>
               <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {% for author in object.authors.all %}
-                {{author.username}},
+                {% for staff in object.staffs.all %}
+                {{staff.username}},
                 {% endfor %}
               </dd>
             </div>
@@ -65,7 +65,7 @@
             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt class="text-sm font-medium leading-6 text-gray-900">Contact No</dt>
               <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {{object.authors.first.phone}}
+                {{object.staffs.first.phone}}
               </dd>
             </div>
 
@@ -83,7 +83,7 @@
             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt class="text-sm font-medium leading-6 text-gray-900">Controller Approval Status</dt>
               <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {% if object.Controller %}
+                {% if object.controller %}
                   Approved
                 {% else %}
                   Not Approved
@@ -94,18 +94,18 @@
           </dl>
         </div>
         <div class="mt-6 flex gap-2">
-          <a href="/">
+          <a href="{% url 'approve' category='consultancy' id=object.id %}">
             <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#4f46e5] hover:bg-[#645cff] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                 Approve 
                 <img src="{% static 'images/Check.svg' %}" class="min-w-[20px] min-h-[20px]">
             </button>
           </a>
-          <a href="/">
+          <!-- <a href="/">
             <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#cb4343] hover:bg-[#e65151] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                 Disapprove
                 <img src="{% static 'images/Cross.svg' %}" class="min-w-[20px] min-h-[20px]">
             </button>
-          </a>
+          </a> -->
         </div>
       </div>
   </div>

@@ -6,13 +6,14 @@ from central.models import *
 centralmodels = {
     'publication': publication,
     'consultancy': consultancy,
-    'funding': consultancy,
+    'funding': funding,
     'ipr': ipr,
     'phd': phd,
     'r1': r1,
     'r2': r2,
     'r3': r3,
-    'awards': awards
+    'awards': awards,
+    'd1': d1
 }
 
 class criteria(models.Model):

@@ -1,0 +1,143 @@
+{% load static %}
+{% load tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Profile</title>
+    {% tailwind_css %}
+</head>
+<body class="bg-[#ebedf0]">
+    {% include 'central/nav.html' %}
+    <div class="mt-4 bg-white p-6">
+        <!-- Notification -->
+            {% if message %}
+            <div class="bg-white shadow-md px-4 py-6 flex flex-col absolute top-4 right-4 rounded-md successnotification">
+                <p class="text-xl font-medium mt-4">{{message}}</p>
+                <img src="{% static 'images/close.svg' %}" onclick="closingops()" alt="close" class="absolute top-2 right-2 cursor-pointer closebtn">
+            </div>
+            {% endif %}
+        <!-- End of Notification -->
+        <div class="header flex gap-6 items-center border-b-[1px] pb-6">
+            <div class="profile w-32 h-32 rounded-full flex justify-center items-center">
+                <p class="font-medium text-6xl text-white">{{request.user.first_name|first}}</p>
+            </div>
+            <div class="headinfo">
+                <p class="font-medium text-xl">{{request.user.first_name}}, {{request.user.designation}}</p>
+                <p class="text-gray-500">{{request.user.username}}</p>
+            </div>
+        </div>  
+        <form method="POST">
+        {% csrf_token %}
+        <div class="min-w-full">
+            <div class="flex gap-4 min-w-full flex-wrap lg:flex-nowrap">
+            <div class="mt-4 w-full">
+                <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Firstname</label>
+                <div class="mt-2 min-w-full">
+                  <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                    <input type="text" maxlength="100" name="first_name" id="title" value="{{request.user.first_name}}" class="min-w-full block border-0 bg-transparent py-1.5 pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" >
+                  </div>
+                </div>
+            </div>
+            <div class="mt-4 w-full">
+                <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Lastname</label>
+                <div class="mt-2 min-w-full">
+                  <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                    <input type="text" maxlength="100" name="last_name" id="title" value="{{request.user.last_name}}" class="min-w-full block border-0 bg-transparent py-1.5 pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" >
+                  </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="min-w-full">
+            <div class="flex gap-4 min-w-full flex-wrap lg:flex-nowrap">
+            <div class="mt-4 w-full">
+                <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Designation</label>
+                <div class="mt-2 min-w-full">
+                  <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                    <input type="text" maxlength="100" name="designation" id="title" value="{{request.user.designation}}" class="min-w-full block border-0 bg-transparent py-1.5 pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" >
+                  </div>
+                </div>
+            </div>
+            <div class="mt-4 w-full">
+                <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Department</label>
+                <div class="mt-2 min-w-full">
+                  <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                    <select id="department" name="department" class="block min-w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        <option value=" " selected> </option>
+                        <option value="Information Technology">Information Technology</option>
+                        <option value="Electronics and Electrical Engineering">Electronics and Electrical Engineering</option>
+                        <option value="Electronics and Communication Engineering">Electronics and Communication Engineering</option>
+                        <option value="Mechanical Engineering">Mechanical Engineering</option>
+                        <option value="Civil Engineering">Civil Engineering</option>
+                        <option value="Computer Science Engineering">Computer Science Engineering</option>
+                        <option value="Science and Humanities">Science and Humanities</option>
+                        <option value="Artificial Intelligence and Data Science">Artificial Intelligence and Data Science</option>
+                  </select>
+                  </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="min-w-full">
+            <div class="flex gap-4 min-w-full flex-wrap lg:flex-nowrap">
+            <div class="mt-4 w-full">
+                <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Email Address</label>
+                <div class="mt-2 min-w-full">
+                  <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                    <input type="text" maxlength="100" name="email" id="title" value="{{request.user.email}}" class="min-w-full block border-0 bg-transparent py-1.5 pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" >
+                  </div>
+                </div>
+            </div>
+            <div class="mt-4 w-full">
+                <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Phone Number</label>
+                <div class="mt-2 min-w-full">
+                  <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                    <input type="text" maxlength="100" name="phone" id="title" value="{{request.user.phone}}" class="min-w-full block border-0 bg-transparent py-1.5 pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" >
+                  </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="mt-6 flex gap-2">
+            <a href="{% block addurl %}/publicationapplication{% endblock %}">
+                <button type="submit" class=" flex gap-2 items-center justify-between text-white bg-[#4f46e5] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                    Update
+                    <img src="{% static 'images/add.svg' %}" class="min-w-[20px] min-h-[20px]">
+                </button>
+            </a>
+            <a href="/changepassword">
+                <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
+                    Change Password
+                </button>
+            </a>
+        </div>
+        </form>
+    </div>
+
+    <script>
+        const profile = document.querySelector('.profile')
+        const dept = '{{request.user.dept}}'
+    
+        const element = document.getElementById('department')
+        element.value = dept
+
+
+        if (!sessionStorage.getItem('profiletheme'))
+        {
+            theme = window.randomcolors[Math.floor(Math.random() * 5)]
+            usermenubtn.style.background = theme
+            sessionStorage.setItem('profiletheme', theme)
+        }
+        else
+        {
+            profile.style.background = sessionStorage.getItem('profiletheme')
+        }
+        
+    </script>
+</body>
+</html>

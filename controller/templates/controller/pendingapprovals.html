@@ -9,12 +9,34 @@
 </head>
 <body class="bg-[#ebedf0]">
     {% include 'central/nav.html' %}
-    <div class="bg-white mt-4">
+    <!-- Notification -->
+    {% if messages %}
+    <div class="flex gap-2 items-center absolute top-5 right-5 z-40 bg-white p-4 shadow-sm rounded-md">
+        <div>
+            <img src="{% static 'images/success.svg' %}" alt="">
+        </div>
+        <div>
+            <p class="text-base font-medium">Success</p>
+            <p class="text-sm">
+                    {% for message in messages %}
+                        {{message}}
+                    {% endfor %}
+            </p>
+        </div>
+        <div class="absolute top-2 right-2 cursor-pointer" id="success-message">
+            <img src="{% static 'images/close.svg' %}" class="opacity-50">
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="bg-white mt-4 max-w-[100vw] overflow-hidden relative">
         <div class="p-6">
             <h3 class="text-xl font-semibold leading-7 text-gray-900">{{request.user.groups.first.name}} Approval</h3>
-            <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">All pending approvals</p>
+            <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">All Pending Approvals</p>
         </div>
-        <table class=" text-left min-h-full text-gray-500 bg-white dark:text-gray-400 rounded-md overflow-x-auto w-full">
+
+        <div class="overflow-x-scroll">
+        <table class="max-w-full text-left min-h-full text-gray-500 bg-white dark:text-gray-400 rounded-md overflow-x-auto w-full">
             <thead class="border-b text-gray-900 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3">
@@ -72,6 +94,13 @@
                 {% endfor %}
             </tbody>
             </table>
+        </div>
     </div>
+    <script>
+        const sm = document.getElementById('success-message')
+        sm.addEventListener('click', ()=>{
+            sm.parentElement.remove()
+        })
+    </script>
 </body>
 </html>

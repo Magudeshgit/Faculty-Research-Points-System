@@ -1,11 +1,15 @@
 from django.db import models
 from authentication.models import staff, department
 
+# r1 - Research related attendings STTP/FDP
+# r2 - Research related course certifications
+# r3 - Acted as a resource person
 
 class publication(models.Model):
     publication = models.CharField(max_length=50) #Temproary
     title = models.CharField(max_length=100)
-    identification = models.CharField(verbose_name='ISSN/DOI No',max_length=25, unique=True)
+    doi = models.CharField(verbose_name='ISSN No',max_length=25, unique=True)
+    issn = models.CharField(verbose_name='DOI No',max_length=25, unique=True)
     url = models.CharField(verbose_name='URL', max_length=50, null=True)
     guide = models.ForeignKey(staff, on_delete=models.SET_NULL, null=True, related_name='guide')
     authors = models.ManyToManyField(staff)
@@ -22,12 +26,6 @@ class publication(models.Model):
     
 # Consultancy and fundings
 class consultancy(models.Model):
-    categories = [
-        ("consultancy", "consultancy"),
-        ("funding", "funding")
-    ]
-    category = models.CharField(max_length=25, choices=categories)
-    
     name = models.CharField(max_length=50, unique=True)
     agency = models.CharField(max_length=50)
     startdate = models.DateField()
@@ -36,7 +34,27 @@ class consultancy(models.Model):
     staffs = models.ManyToManyField(staff)
     department = models.ForeignKey(department, on_delete=models.SET_NULL, null=True)
     
-    # Funding specific
+    
+    # Verification process
+    hodapproval = models.BooleanField(verbose_name="HoD Approval Status", default=False, null=True)
+    controller = models.BooleanField(verbose_name="Controller Approval Status", default=False, null=True)
+    
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name = 'Consultancy'
+        verbose_name_plural = 'Consultancies'
+
+class funding(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    agency = models.CharField(max_length=50)
+    startdate = models.DateField()
+    enddate = models.DateField()
+    amount = models.PositiveIntegerField()
+    staffs = models.ManyToManyField(staff)
+    department = models.ForeignKey(department, on_delete=models.SET_NULL, null=True)
+    
     types = [
         ('sanctioned', 'sanctioned'),
         ('granted', 'granted')
@@ -47,15 +65,15 @@ class consultancy(models.Model):
     
     # Verification process
     hodapproval = models.BooleanField(verbose_name="HoD Approval Status", default=False, null=True)
-    Controller = models.BooleanField(verbose_name="Controller Approval Status", default=False, null=True)
+    controller = models.BooleanField(verbose_name="Controller Approval Status", default=False, null=True)
     
     def __str__(self):
         return self.name
     
     class Meta:
-        verbose_name = 'Consultancies and fundings'
-        verbose_name_plural = 'Consultancies and fundings'
-        
+        verbose_name = 'Funding'
+        verbose_name_plural = 'Fundings'
+
 class ipr(models.Model):
     types = [
         ('Patent Filing','Patent Filing'),
@@ -80,7 +98,7 @@ class ipr(models.Model):
     
     # Verification process
     hodapproval = models.BooleanField(verbose_name="HoD Approval Status", default=False, null=True)
-    Controller = models.BooleanField(verbose_name="Controller Approval Status", default=False, null=True)
+    controller = models.BooleanField(verbose_name="Controller Approval Status", default=False, null=True)
     
     def __str__(self):
         return self.title
@@ -112,7 +130,7 @@ class phd(models.Model):
     def __str__(self):
         return self.domain
     
-# Research related attending and awards
+# Research related attending
 class r1(models.Model):
     types = (
         ['STTP','STTP'],
@@ -134,12 +152,15 @@ class r1(models.Model):
     department = models.ForeignKey(department, on_delete=models.SET_NULL, null=True)
     staffs = models.ManyToManyField(staff)
     
+    hodapproval = models.BooleanField(verbose_name="HoD Approval Status", default=False, null=True)
+    controller = models.BooleanField(verbose_name="Controller Approval Status", default=False, null=True)
+    
     def __str__(self):
         return self.title
     
     class Meta:
-        verbose_name = 'Research Related Attending & Awards'
-        verbose_name_plural = 'Research Related Attendings & Awards'
+        verbose_name = 'Research Related Attending (STTP/FDP)'
+        verbose_name_plural = 'Research Related Attendings (STTP/FDP)'
     
 class awards(models.Model):
      modeltypes = (
@@ -230,4 +251,23 @@ class r3(models.Model):
     def __str__(self):
         return self.location
         
-        
+class d1(models.Model):
+    domain = models.CharField(max_length=50)
+    noc = models.PositiveIntegerField()
+    mark = models.PositiveIntegerField()
+    certificateno = models.CharField(max_length=35, unique=True)
+    staffs = models.ForeignKey(staff, on_delete=models.CASCADE, null=True)
+    department = models.ForeignKey(department, on_delete=models.SET_NULL, null=True)
+    date = models.DateField()
+    
+    # Verification process
+    hodapproval = models.BooleanField(verbose_name="HoD Approval Status", default=False, null=True)
+    controller = models.BooleanField(verbose_name="Controller Approval Status", default=False, null=True)
+    
+    
+    class Meta:
+        verbose_name = 'Domain Certification'
+        verbose_name_plural = 'Domain Certifications'
+    
+    def __str__(self):
+        return self.domain

@@ -50,9 +50,7 @@
                 {{object.department}}
             </td>
             <td class="px-6 py-4">
-                {% for staff in object.staffs.all %}
-                    {{staff}}, 
-                {% endfor %}
+                {{object.staffs}}
             </td>
         </tr>
         {% endfor %}

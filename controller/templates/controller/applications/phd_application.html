@@ -12,7 +12,7 @@
   <div class="bg-white min-w-full mt-6 ">
     <div class="bg-white max-w-[90%] rounded-md p-6 mx-auto">
         <div class="px-4 sm:px-0">
-          <h3 class="text-xl font-semibold leading-7 text-gray-900">Moderator Approval</h3>
+          <h3 class="text-xl font-semibold leading-7 text-gray-900">{{request.user.groups.first}} Approval</h3>
           <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">PhD Application form</p>
         </div>
         <div class="mt-6 border-t border-gray-100">
@@ -101,17 +101,17 @@
           </dl>
         </div>
         <div class="mt-6 flex gap-2">
-          <a href="/">
+          <a href="{% url 'approve' category='phd' id=object.id %}">
             <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#4f46e5] hover:bg-[#645cff] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                 Approve 
                 <img src="{% static 'images/Check.svg' %}" class="min-w-[20px] min-h-[20px]">
             </button>
           </a>
-          <a href="/">
+          <!-- <a href="/">
             <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#cb4343] hover:bg-[#e65151] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                 Disapprove
                 <img src="{% static 'images/Cross.svg' %}" class="min-w-[20px] min-h-[20px]">
-            </button>
+            </button> -->
           </a>
         </div>
       </div>

@@ -12,7 +12,7 @@
   <div class="bg-white min-w-full mt-6 ">
     <div class="bg-white max-w-[90%] rounded-md p-6 mx-auto">
         <div class="px-4 sm:px-0">
-          <h3 class="text-base font-semibold leading-7 text-gray-900">Moderator Approval</h3>
+          <h3 class="text-base font-semibold leading-7 text-gray-900">{{request.user.groups.first.name|title}} Approval</h3>
           <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Research Related Attendings</p>
         </div>
         <div class="mt-6 border-t border-gray-100">
@@ -63,19 +63,35 @@
                 {{object.staffs.first.phone}}
               </dd>
             </div>
+
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">HoD Approval Status</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                {% if object.hodapproval %}
+                  Approved
+                {% else %}
+                  Not Approved
+                {% endif %}
+              </dd>
+            </div>
+
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Controller Approval Status</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                {% if object.controller %}
+                  Approved
+                {% else %}
+                  Not Approved
+                {% endif %}
+              </dd>
+            </div>
           </dl>
         </div>
         <div class="mt-6 flex gap-2">
-          <a href="/">
+          <a href="{% url 'approve' category='r1' id=object.id %}">
             <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#4f46e5] hover:bg-[#645cff] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                 Approve 
                 <img src="{% static 'images/Check.svg' %}" class="min-w-[20px] min-h-[20px]">
-            </button>
-          </a>
-          <a href="/">
-            <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#cb4343] hover:bg-[#e65151] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                Disapprove
-                <img src="{% static 'images/Cross.svg' %}" class="min-w-[20px] min-h-[20px]">
             </button>
           </a>
         </div>
