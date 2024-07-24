@@ -3,8 +3,9 @@ from django.conf import settings
 from central.models import *
 from .models import *
 from django.core.exceptions import ObjectDoesNotExist
+from .criterian import add_publicationpoints
 
-
+# Stage - 2: Approval Flow Operations
 def achievement_saved(sender, instance, **kwargs):
     print(sender._meta.model.__name__)
     if kwargs['created']:
@@ -30,3 +31,12 @@ post_save.connect(achievement_saved, sender=r2)
 post_save.connect(achievement_saved, sender=r3)
 post_save.connect(achievement_saved, sender=awards)
 post_save.connect(achievement_saved, sender=d1)
+
+
+# Stage - 3: 
+def point_allocator(sender, instance, **kwargs):
+    if instance.approvalstatus == 'Controller Approved':
+        add_publicationpoints(instance)
+
+
+post_save.connect(point_allocator, sender=achievements)

@@ -20,7 +20,7 @@ def submitted(request, id):
 # Publication
 @login_required
 def publication(request):
-    publications = publ.objects.filter(Q(authors=request.user) | Q(guide=request.user))
+    publications = publ.objects.filter(Q(authors=request.user) | Q(guide=request.user), controller=True)
     print(request.user.groups)
     return render(request, 'central/publication.html', {"publications": publications})
 
@@ -99,7 +99,7 @@ def publication_application(request):
 # Consultancy
 @login_required
 def consultancies(request):
-    consultancies = consultancy.objects.filter(staffs=request.user)
+    consultancies = consultancy.objects.filter(staffs=request.user, controller=True)
     return render(request, 'central/consultancy.html', {"objects": consultancies})
 
 @login_required
@@ -170,7 +170,7 @@ def consultancy_application(request):
 # Funding
 @login_required
 def funding(request):
-    fundings = _funding.objects.filter(staffs=request.user)
+    fundings = _funding.objects.filter(staffs=request.user, controller=True)
     return render(request, 'central/funding.html', {"objects": fundings})
 
 @login_required
@@ -244,7 +244,7 @@ def funding_application(request):
 # IPR Related
 @login_required
 def ipr(request):
-    obj = _ipr.objects.filter(staffs = request.user)
+    obj = _ipr.objects.filter(staffs = request.user, controller=True)
     return render(request, 'central/ipr.html', {'objects':obj})
 
 @login_required
@@ -310,7 +310,7 @@ def ipr_application(request):
 # PhD Related
 @login_required
 def phd(request):
-    obj = _phd.objects.filter(Q(supervisor=request.user) | Q(staffs=request.user)).distinct()   
+    obj = _phd.objects.filter(Q(supervisor=request.user) | Q(staffs=request.user), controller=True).distinct()   
     return render(request, 'central/phd.html', {'objects': obj})
 
 @login_required
@@ -384,7 +384,7 @@ def phd_application(request):
 # Research oriented STTP/FDP (NPTEL excluded)/ Seminar/Workshop attended (Physical mode & External only)
 @login_required
 def r1(request):
-    obj = _r1.objects.filter(staffs=request.user)
+    obj = _r1.objects.filter(staffs=request.user, controller=True)
     return render(request, 'central/r1.html', {'objects': obj})
 
 # Start from r1_application:
@@ -460,7 +460,7 @@ def r1_application(request):
 
 @login_required
 def awards(request):
-    obj = _awards.objects.filter(staffs=request.user)
+    obj = _awards.objects.filter(staffs=request.user, controller=True)
     return render(request, 'central/awards.html',{'objects':obj})
 
 @login_required
@@ -512,7 +512,7 @@ def awards_application(request):
 # Research Related Course (Special Case: Department and staffs are automatically added from request object)
 @login_required
 def r2(request):
-    obj = _r2.objects.filter(staffs = request.user)
+    obj = _r2.objects.filter(staffs = request.user, controller=True)
     return render(request, 'central/r2.html', {'objects':obj})
 
 @login_required
@@ -559,7 +559,7 @@ def r2_application(request):
 
 @login_required
 def r3(request):
-    obj = _r3.objects.filter(staffs = request.user)
+    obj = _r3.objects.filter(staffs = request.user, controller=True)
     return render(request, 'central/r3.html', {'objects': obj})
 
 @login_required

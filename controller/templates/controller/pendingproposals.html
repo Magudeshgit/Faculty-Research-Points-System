@@ -1,0 +1,88 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Proposals</title>
+    {% tailwind_css %}
+</head>
+<body class="bg-[#ebedf0]">
+    {% include 'central/nav.html' %}
+    <!-- Notification -->
+
+    <div class="bg-white mt-4 max-w-[100vw] overflow-hidden relative">
+        <div class="p-6">
+            <h3 class="text-xl font-semibold leading-7 text-gray-900">Pending Proposals</h3>
+            <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">All Pending Proposals</p>
+        </div>
+
+        <div class="overflow-x-scroll">
+        <table class="max-w-full text-left min-h-full text-gray-500 bg-white dark:text-gray-400 rounded-md overflow-x-auto w-full">
+            <thead class="border-b text-gray-900 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        Reference No
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Title
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Category
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Date
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Department
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Approval Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for object in objects %}
+                <tr class="border-b hover:bg-slate-100">
+                    <td scope="row" class="hover:underline px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                        {{object.achievementid}}
+                    </td>
+                    <td scope="row" class="hover:underline px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                        <a href="{% url 'approvalapplication' category=object.category.name id=object.achievementid %}">
+                        {{object.title|title}}
+                        </a>
+                    </td>
+                    <td scope="row" class="px-6 py-4">
+                        {{object.category.name | title}}
+                    </td>
+                    <td scope="row" class="hover:underline px-6 py-4 whitespace-nowrap">
+                        {{object.date}}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{object.department}}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{object.approvalstatus}}
+                    </td>
+                    <!-- <td class="px-6 py-4">
+                        <a href="{% url 'approvalapplication' category=object.category.name id=object.achievementid %}">
+                            <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#4f46e5] hover:bg-[#645cff] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                Review
+                                <img src="{% static 'images/arrowright.svg' %}" class="min-w-[20px] min-h-[20px]">
+                            </button>
+                          </a>
+                    </td> -->
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        const sm = document.getElementById('success-message')
+        sm.addEventListener('click', ()=>{
+            sm.parentElement.remove()
+        })
+    </script>
+</body>
+</html>

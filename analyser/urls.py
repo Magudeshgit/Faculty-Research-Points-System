@@ -69,7 +69,7 @@ urlpatterns = [
     # Controller App
     
     path('approvalapplication/<str:category>/<int:id>/', btv.approvalapplication, name="approvalapplication"),
-    
+    path('pendingproposals/', btv.pendingproposals, name="approvalapplication"),
     path('pendingapprovals/', btv.pendingapprovals),
     path('approve/<str:category>/<int:id>/', btv.approve, name='approve'),
 ]

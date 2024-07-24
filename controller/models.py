@@ -59,3 +59,16 @@ class rewardcategory(models.Model):
     class Meta:
         verbose_name = 'Reward Category'
         verbose_name_plural = 'Reward Categories'
+        
+class rewardpoints(models.Model):
+    staff = models.ForeignKey(staff, on_delete=models.CASCADE)
+    rc = models.ForeignKey(rewardcategory, on_delete=models.SET_NULL, null=True, verbose_name="Reward Category")
+    achid = models.ForeignKey(achievements, on_delete=models.SET_NULL, null=True, verbose_name='Achievement ID')
+    rctr = models.ManyToManyField(criteria, verbose_name='Reward Criteria')
+    points = models.PositiveIntegerField()
+    
+    class Meta:
+        verbose_name='Reward Point'
+        verbose_name_plural='Reward Points'
+    
+    

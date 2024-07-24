@@ -20,6 +20,10 @@ centralmodels = {
     'd1': d1
 }
 
+def pendingproposals(request):
+    objects = achievements.objects.filter(Q(approvalstatus='Not Approved') | Q(approvalstatus='Not Approved'), staff=request.user)
+    return render(request, 'controller/pendingproposals.html', {'objects': objects})
+
 @is_moderator
 def approvalapplication(request, category,id):
     obj = centralmodels[category].objects.get(id=id)
