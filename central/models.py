@@ -52,12 +52,14 @@ class funding(models.Model):
     startdate = models.DateField()
     enddate = models.DateField()
     amount = models.PositiveIntegerField()
+    
+    pi = models.ForeignKey(staff, related_name='pi', on_delete=models.SET_NULL, null=True)
     staffs = models.ManyToManyField(staff)
     department = models.ForeignKey(department, on_delete=models.SET_NULL, null=True)
     
     types = [
         ('sanctioned', 'sanctioned'),
-        ('granted', 'granted')
+        ('submitted', 'submitted')
     ]
     status = models.CharField(max_length=10, choices=types, blank=True, null=True)
     receivedamount = models.PositiveIntegerField(null=True, blank=True)
@@ -129,7 +131,9 @@ class phd(models.Model):
     
     def __str__(self):
         return self.domain
-    
+
+
+# Single User objects
 # Research related attending
 class r1(models.Model):
     types = (
@@ -161,7 +165,7 @@ class r1(models.Model):
     class Meta:
         verbose_name = 'Research Related Attending (STTP/FDP)'
         verbose_name_plural = 'Research Related Attendings (STTP/FDP)'
-    
+
 class awards(models.Model):
      modeltypes = (
         ['Attending', 'Attending'],

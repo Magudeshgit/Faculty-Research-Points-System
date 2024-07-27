@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.contrib.auth.hashers import check_password, make_password
+from django.contrib import messages
 
 from .models import staff, department
 
@@ -28,12 +29,13 @@ def profile(request):
         obj.phone = request.POST['phone']
         obj.designation = request.POST['designation']
         
-        obj.dept = department.objects.get(name=request.POST['department'])
+        if request.POST.get('department') != None:
+            obj.dept = department.objects.get(name=request.POST['department'])
         obj.save()
         
-        context = {'message': "Profile Updated!"}
-        return render(request, 'authentication/profile.html', context)
-        
+        messages.success(request, 'Profile updated')
+        return redirect('/profile')
+
     return render(request, 'authentication/profile.html')
 
 def change_password(request):
@@ -49,6 +51,7 @@ def change_password(request):
         if request.user.check_password(oldpassword):
             request.user.set_password(password1)
             request.user.save()
+            messages.success(request, 'Password Succesfully Updated')
             return redirect('/profile')
         else:
             context = {'error': 'Incorrect old password'}

@@ -42,7 +42,6 @@ def publication_application(request):
                     for i in range(1,int(request.POST[field])+1):
                         _username = request.POST['authorid' + str(i)]
                         if request.POST['guideid'] == _username:
-                            print("WOah")
                             context = {'error' : 'The Guide ID and Author IDs Cannot be same', 'errorhelp': "Kindly correct the errors below."}
                             return render(request, 'central/publication_application.html', context)
 
@@ -134,6 +133,7 @@ def consultancy_application(request):
         
         try:
             department = dept.objects.get(name = _department)
+            
             obj = consultancy.objects.create(**data)
             obj.staffs.add(*staffobj)
             obj.department = department
@@ -206,9 +206,11 @@ def funding_application(request):
             
         _department = request.POST['department']
         department = dept.objects.get(name = _department)
+        pi = staff.objects.get(username=request.POST['piid'])
         
         try:    
             obj = _funding.objects.create(**data)
+            obj.pi = pi
             obj.staffs.add(*staffobj)
             obj.department = department
             if request.POST['status'] == 'granted':

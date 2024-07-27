@@ -65,10 +65,13 @@ class rewardpoints(models.Model):
     rc = models.ForeignKey(rewardcategory, on_delete=models.SET_NULL, null=True, verbose_name="Reward Category")
     achid = models.ForeignKey(achievements, on_delete=models.SET_NULL, null=True, verbose_name='Achievement ID')
     rctr = models.ManyToManyField(criteria, verbose_name='Reward Criteria')
-    points = models.PositiveIntegerField()
+    date = models.DateField(auto_now_add=True)
+    points = models.FloatField()
     
     class Meta:
         verbose_name='Reward Point'
         verbose_name_plural='Reward Points'
     
     
+    def __str__(self):
+        return str(self.achid) + str(self.staff)

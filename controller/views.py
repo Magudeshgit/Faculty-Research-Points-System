@@ -7,21 +7,21 @@ from django.contrib import messages
 
 # Dependency function
 # Note: Variable names are file names changing them will cause template not found error
-centralmodels = {
-    'publication': publication,
-    'consultancy': consultancy,
-    'funding': funding,
-    'ipr': ipr,
-    'phd': phd,
-    'r1': r1,
-    'r2': r2,
-    'r3': r3,
-    'awards': awards,
-    'd1': d1
-}
+# centralmodels = {
+#     'publication': publication,
+#     'consultancy': consultancy,
+#     'funding': funding,
+#     'ipr': ipr,
+#     'phd': phd,
+#     'r1': r1,
+#     'r2': r2,
+#     'r3': r3,
+#     'awards': awards,
+#     'd1': d1
+# }
 
 def pendingproposals(request):
-    objects = achievements.objects.filter(Q(approvalstatus='Not Approved') | Q(approvalstatus='Not Approved'), staff=request.user)
+    objects = achievements.objects.filter(Q(approvalstatus='Not Approved') | Q(approvalstatus='HoD Approved'), staff=request.user)
     return render(request, 'controller/pendingproposals.html', {'objects': objects})
 
 @is_moderator
