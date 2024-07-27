@@ -116,3 +116,30 @@ def add_fundingpoints(_instance):
             )
             rp.rctr.add(criteria)
             rp.save()
+            
+def add_iprpoints(_instance):
+    calculated_points = 0
+    instance = centralmodels[_instance.category.name].objects.get(id=_instance.achievementid)
+    
+    rc = rewardcategory.objects.get(name='ipr')
+    criterias = rc.criterias.all()
+    cr = ''
+    
+    for criteria in criterias:
+        print(criteria.description, instance.category)
+        if criteria.description == instance.category:
+            calculated_points += criteria.points
+            cr = criteria
+            
+    staffs = instance.staffs.all()
+    calculated_points = calculated_points / staffs.count()
+    
+    for staff in staffs:
+        rp = rewardpoints.objects.create(
+            staff = staff,
+            rc=rc,
+            achid=_instance,
+            points = calculated_points
+        )
+        rp.rctr.add(cr)
+        rp.save()

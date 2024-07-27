@@ -79,15 +79,11 @@ class funding(models.Model):
 class ipr(models.Model):
     types = [
         ('Patent Filing','Patent Filing'),
-        ('Patent Grant','Patent Grant'),
+        ('Patent Granted','Patent Granted'),
         ('Design Filing','Design Filing'),
-        ('Design Grant','Design Grant'),
+        ('Design Granted','Design Granted'),
         ('Copyright Filing', 'Copyright Filing'),
-        ('Copyright Registered','Copyright Registered'),
-
-        ('copyright', 'copyright'),
-        ('trademark', 'trademark'),
-        ('patent', 'patent')
+        ('Copyright Registered','Copyright Registered')
 ]
     category = models.CharField(max_length=50, choices=types)
     title = models.CharField(max_length=100)

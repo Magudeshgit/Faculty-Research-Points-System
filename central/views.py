@@ -71,9 +71,11 @@ def publication_application(request):
                 achievementid=obj.id,date=data['date'],
                 category=rc, department=department)
             ach.staff.add(*staffobj)
+            
             # Intentionally Saving macro(consultancy) object after micro(acheievement) object because, 
             # it internally triggers a signal to the micro object which in turn requires 
             # the macro object to saved first.
+            
             ach.save()
             obj.save()
             
@@ -255,7 +257,7 @@ def ipr_application(request):
     if request.method == 'POST':
         data = {}
         staffobj = []
-        formfields = ['title', 'category', 'status', 'uniqueno', 'patentoffice', 'date', 'staffcount']
+        formfields = ['title', 'category','uniqueno', 'patentoffice', 'date', 'staffcount']
         for field in formfields:
             if field != 'staffcount':
                 data[field] = request.POST[field]
@@ -271,7 +273,6 @@ def ipr_application(request):
                         'error': f'Specified Employee ID of staffs: {_username} is invalid or does not exist',
                         'title': data['title'],
                         'category': data['category'],
-                        'status': data['status'],
                         'uniqueno': data['uniqueno'],
                         'patentoffice': data['patentoffice'],
                         'date': data['date'],

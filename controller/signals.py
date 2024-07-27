@@ -10,7 +10,7 @@ point_dependencies = {
     'consultancy': add_consultancypoints,
     'funding': add_fundingpoints,
     # 'phd': add_phdpoints,
-    # 'ipr': add_iprpoints,
+    'ipr': add_iprpoints,
     # 'r1': add_r1points,
     # 'r2': add_r2points,
     # 'r3': add_r3points,

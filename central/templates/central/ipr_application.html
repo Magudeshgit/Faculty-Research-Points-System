@@ -30,35 +30,26 @@
                       </div>
                     </div>
                 </div>
-
                 <div class="sm:col-span-3">
-                  <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Document</label>
+                  <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Type</label>
                   <div class="mt-2 min-w-full">
                     <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                       <select id="department" name="category" required aria-valuenow="{{category}}" class="fundingcategory block min-w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                        <option value="patent">Patent</option>
-                        <option value="copyright">Copyright</option>
-                        <option value="granted">Trademark</option>
-                    </select>
+                        <option value="Patent Filing">Patent Filing</option>
+                        <option value="Patent Granted">Patent Granted</option>
+                        <option value="Design Filing">Design Filing</option>
+                        <option value="Design Granted">Design Granted</option>
+                        <option value="Copyright Filing">Copyright Filing</option>
+                        <option value="Copyright Registered">Copyright Registered</option>
+                      </select>
                     </div>
                   </div>
               </div>
+    
 
         </div>
 
       <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-          <div class="sm:col-span-3">
-              <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Type</label>
-              <div class="mt-2 min-w-full">
-                <div class="min-w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                  <select id="department" name="status" required aria-valuenow="{{status}}" class="fundingcategory block min-w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                    <option value="filing">Filing</option>
-                    <option value="granted">Granted</option>
-                </select>
-                </div>
-              </div>
-          </div>
-
           <div class="sm:col-span-3">
               <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Unique No</label>
               <div class="mt-2 min-w-full">
@@ -69,16 +60,17 @@
               </div>
           </div>
 
-      </div>
-      </div>
-  
-        <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 fieldswrap">
           <div class="sm:col-span-3">
             <label for="region" class="block text-sm font-medium leading-6 text-gray-900">Patent Office Region</label>
             <div class="mt-2">
               <input type="text" required name="patentoffice" id="region" value="{{patentoffice}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
             </div>
           </div>
+
+      </div>
+      </div>
+  
+        <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 fieldswrap">
 
           <div class="sm:col-span-3">
             <label for="identification" class="block text-sm font-medium leading-6 text-gray-900">Date of Filing/Granted</label>
