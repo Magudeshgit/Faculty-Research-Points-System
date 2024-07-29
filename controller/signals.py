@@ -13,7 +13,8 @@ point_dependencies = {
     'ipr': add_iprpoints,
     # 'r1': add_r1points,
     # 'r2': add_r2points,
-    # 'r3': add_r3points,
+    'r3': add_r3points,
+    'awards': add_awardpoints
 }
 
 # Stage - 2: Approval Flow Operations

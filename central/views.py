@@ -2,15 +2,20 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .models import consultancy, ipr as _ipr, phd as _phd, r1 as _r1, awards as _awards, r2 as _r2, r3 as _r3, publication as publ, funding as _funding, d1 as _d1
-from controller.models import achievements, rewardcategory
+from controller.models import achievements, rewardcategory, rewardpoints
 from authentication.models import staff, department as dept
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.db.models import Q
+from django.db.models import Sum
 
 @login_required
 def home(request):
-    return render(request, 'central/home2.html')
+    achievement_count = achievements.objects.filter(staff=request.user, approvalstatus='Controller Approved').count()
+    score = rewardpoints.objects.filter(staff=request.user).aggregate(Sum('points'))['points__sum']
+    pending_count = achievements.objects.filter(Q(approvalstatus='Not Approved') | Q(approvalstatus='HoD Approved'), staff=request.user).count()
+    context = {'ach_count': achievement_count, 'pen_count':pending_count, 'score': score}
+    return render(request, 'central/home2.html', context)
 
 @login_required
 def submitted(request, id):

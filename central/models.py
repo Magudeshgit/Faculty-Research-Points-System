@@ -107,8 +107,7 @@ class ipr(models.Model):
         
 class phd(models.Model):
     choices = (
-        ['Guideship - ongoing', 'Guideship - ongoing'],
-        ['Guideship - completed', 'Guideship - completed'],
+        ['Guideship', 'Guideship'],
         ['Ongoing Scholar', 'Ongoing Scholar'],
         ['Completed Scholar', 'Completed Scholar'],
         )
@@ -169,10 +168,10 @@ class awards(models.Model):
     )
      
      institutiontypes = [
-         ('from our Institution','from our Institution'),
-         ('from top NIRF- ranked government and government-aided academic institutions, NPTEL Star performers/Topper certificate','from top NIRF- ranked government and government-aided academic institutions, NPTEL Star performers/Topper certificate'),
-         ('from academic institutions in abroad/ Industry /Scientific bodies', 'from academic institutions in abroad/ Industry /Scientific bodies'),
-         ('from Government Agencies-State/ National Awards', 'from Government Agencies-State/ National Awards')
+         ('RC029','RC029'),
+         ('RC030','RC030'),
+         ('RC031', 'RC031'),
+         ('RC032', 'RC032')
      ]
      
      title = models.CharField(max_length=100)
@@ -227,13 +226,14 @@ class r3(models.Model):
         ("Offline", "Offline"),
     ]
     categories = [
-        ("Reputed academics institutions abroad top NIRF", "Reputed academics institutions abroad top NIRF etc"),
-        ("Industries", "Industries"),
-        ("Developed Course modules on Swayam-NPTEL or Coursera (minimum: 1hr)","Developed Course modules Swayam-NPTEL or Coursera (minimum: 1hr)")
+        ("reputed institutions abroad",
+         "reputed institutions abroad"),
+        ("industries", "industries"),
+        ("course modules", "course modules")
     ]
     
     mode = models.CharField(max_length=50, choices=modes)
-    category = models.CharField(max_length=100, choices=categories)
+    category = models.TextField(choices=categories)
     location = models.CharField(max_length=75)
     purpose = models.TextField()
     staffs = models.ForeignKey(staff, on_delete=models.CASCADE, null=True)

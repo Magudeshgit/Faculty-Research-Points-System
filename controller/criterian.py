@@ -143,3 +143,50 @@ def add_iprpoints(_instance):
         )
         rp.rctr.add(cr)
         rp.save()
+        
+def add_r3points(_instance):
+    calculated_points = 0
+    instance = centralmodels[_instance.category.name].objects.get(id=_instance.achievementid)
+    
+    rc = rewardcategory.objects.get(name='r3')
+    criterias = rc.criterias.all()
+    cr = ''
+    
+    for criteria in criterias:
+        print(criteria.description, str(instance.category +' '+instance.mode))
+        if criteria.description == str(instance.category +' '+instance.mode):
+            calculated_points += criteria.points
+            cr = criteria
+    
+    rp = rewardpoints.objects.create(
+        staff=instance.staffs,
+        rc=rc,
+        achid=_instance,
+        points=calculated_points
+    )
+    rp.rctr.add(cr)
+    rp.save()
+    
+def add_awardpoints(_instance):
+    calculated_points = 0
+    instance = centralmodels[_instance.category.name].objects.get(id=_instance.achievementid)
+    
+    rc = rewardcategory.objects.get(name='awards')
+    criterias = rc.criterias.all()
+    cr = ''
+    # Special Case: referencing serial instead of description
+    for criteria in criterias:
+        print(criteria.serial, instance.institutiontype)
+        if criteria.serial == instance.institutiontype:
+            calculated_points += criteria.points
+            cr = criteria
+            
+    rp = rewardpoints.objects.create(
+        staff=instance.staffs,
+        rc=rc,
+        achid=_instance,
+        points=calculated_points
+    )
+    rp.rctr.add(cr)
+    rp.save()
+    
