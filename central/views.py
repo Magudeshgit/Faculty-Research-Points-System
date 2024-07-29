@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http.response import JsonResponse, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .models import consultancy, ipr as _ipr, phd as _phd, r1 as _r1, awards as _awards, r2 as _r2, r3 as _r3, publication as publ, funding as _funding, d1 as _d1
@@ -8,6 +9,20 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.db.models import Q
 from django.db.models import Sum
+from django.views.decorators.csrf import csrf_exempt
+from . import model as coursemodel
+
+# Course Verifier ML MODEL
+@csrf_exempt
+def verifycourse(request, keyword):
+    if request.method == 'POST':
+        prediction = coursemodel.predict([keyword])
+        if prediction:
+            return JsonResponse({"keyword":keyword, "prediction": True})
+        else:
+            return JsonResponse({"keyword":keyword, "prediction": False})
+    else:
+        return HttpResponse("This is a API only endpoint")
 
 @login_required
 def home(request):
@@ -402,34 +417,17 @@ def r1_application(request):
         context = {}
         data = {}
         staffobj = []
-        formfields = ['title', 'institution', 'type', 'date', 'timeperiods','staffcount']
+        formfields = ['title', 'institution', 'type', 'date', 'timeperiods']
         for field in formfields:
             if field != 'staffcount':
                 data[field] = request.POST[field]
-            else:
-                try:
-                    for i in range(1,int(request.POST[field])+1):
-                        _username = request.POST['authorid' + str(i)]
-                        _staff = staff.objects.get(username=_username)
-                        staffobj.append(_staff)
-                except ObjectDoesNotExist:
-                    context = {
-                        'errorhelp' :'Kindly correct the errors below and recheck all the fields',
-                        'error': f'Specified Employee ID of staffs: {_username} is invalid or does not exist',
-                        'title': data['title'],
-                        'category': data['category'],
-                        'status': data['status'],
-                        'uniqueno': data['uniqueno'],
-                        'patentoffice': data['patentoffice'],
-                        'date': data['date'],
-                        'staffcount': request.POST['staffcount'],
-                    }
-                    return render(request, 'central/r1_application.html', context)
                 
         department = dept.objects.get(name = request.POST['department'])
-        try:    
+
+        try:
+            data['staffs'] = request.user
             obj = _r1.objects.create(**data)
-            obj.staffs.add(*staffobj)
+            
             obj.department = department
             
             # Centralizing for Operation 2
@@ -438,7 +436,7 @@ def r1_application(request):
             ach = achievements.objects.create(title=data['title'], achievementid=obj.id,
                                         date=data['date'],category=rc, 
                                         department=department)
-            ach.staff.add(*staffobj)
+            ach.staff.add(request.user)
             
             ach.save()
             obj.save()
@@ -535,6 +533,11 @@ def r2_application(request):
             obj = _r2.objects.create(**data)
             obj.staffs = request.user
             obj.department = request.user.dept
+            
+            if coursemodel.predict([data['coursename']]):
+                obj.verification = True
+            else:
+                obj.verification = False
             
             
             rc = rewardcategory.objects.get(name='r2')
@@ -637,16 +640,17 @@ def domaincert_application(request):
             obj.save()
             
         except Exception as e:
+            print(e)
             context = {
                 'iderror': f'The specified Certificate No is already been registered, kindly recheck.',
                 'errorhelp' : 'Kindly correct the errors below.'
                 }
-            return render(request, 'central/r3_application.html', context) 
+            return render(request, 'central/domaincert_application.html', context) 
         
         if request.POST['submissiontype'] == 'submit':
             context['submitted'] = True
             context['submittedid'] = obj.id
-            return render(request, 'central/r3_application.html', context)
+            return render(request, 'central/domaincert_application.html', context)
         else:
             return redirect(reverse('submitted', kwargs={'id': obj.id}))
         

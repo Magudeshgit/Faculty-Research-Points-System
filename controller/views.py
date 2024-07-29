@@ -7,18 +7,18 @@ from django.contrib import messages
 
 # Dependency function
 # Note: Variable names are file names changing them will cause template not found error
-# centralmodels = {
-#     'publication': publication,
-#     'consultancy': consultancy,
-#     'funding': funding,
-#     'ipr': ipr,
-#     'phd': phd,
-#     'r1': r1,
-#     'r2': r2,
-#     'r3': r3,
-#     'awards': awards,
-#     'd1': d1
-# }
+centralmodels = {
+    'publication': publication,
+    'consultancy': consultancy,
+    'funding': funding,
+    'ipr': ipr,
+    'phd': phd,
+    'r1': r1,
+    'r2': r2,
+    'r3': r3,
+    'awards': awards,
+    'd1': d1
+}
 
 def pendingproposals(request):
     objects = achievements.objects.filter(Q(approvalstatus='Not Approved') | Q(approvalstatus='HoD Approved'), staff=request.user)
@@ -39,7 +39,6 @@ def pendingapprovals(request):
 
 @is_moderator
 def approve(request, category, id):
-    print(request.path_info)
     obj = centralmodels[category].objects.get(id=id)
     if request.user.groups.filter(name='HoD').exists():
         obj.hodapproval = True

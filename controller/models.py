@@ -43,7 +43,7 @@ class achievements(models.Model):
     approvalstatus = models.CharField(max_length=50, choices=statuses, default='Not Approved')
     
     def __str__(self):
-        return self.title + ' - ' + self.category.name
+        return self.title + ' - ' + str(self.category)
     
     class Meta:
         verbose_name = "Achievement"

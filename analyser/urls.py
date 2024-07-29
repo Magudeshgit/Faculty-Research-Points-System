@@ -31,6 +31,9 @@ urlpatterns = [
     path('changepassword/', atv.change_password),
     path('logout/', atv._logout),
     
+    # ML Model
+    path('api/verifycourse/<str:keyword>/', ctv.verifycourse),
+    
     # Central App
     
     path('', ctv.home),

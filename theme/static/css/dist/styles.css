@@ -1105,6 +1105,10 @@ select {
   flex-wrap: wrap;
 }
 
+.items-end {
+  align-items: flex-end;
+}
+
 .items-center {
   align-items: center;
 }
@@ -1208,6 +1212,10 @@ select {
   white-space: nowrap;
 }
 
+.break-keep {
+  word-break: keep-all;
+}
+
 .rounded {
   border-radius: 0.25rem;
 }
@@ -1277,6 +1285,11 @@ select {
 .border-gray-300 {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
+}
+
+.border-gray-900 {
+  --tw-border-opacity: 1;
+  border-color: rgb(17 24 39 / var(--tw-border-opacity));
 }
 
 .border-gray-900\/10 {

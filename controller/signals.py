@@ -9,12 +9,13 @@ point_dependencies = {
     'publication': add_publicationpoints,
     'consultancy': add_consultancypoints,
     'funding': add_fundingpoints,
-    # 'phd': add_phdpoints,
+    'phd': add_phdpoints,
     'ipr': add_iprpoints,
-    # 'r1': add_r1points,
-    # 'r2': add_r2points,
+    'r1': add_r1points,
+    'r2': add_r2points,
     'r3': add_r3points,
-    'awards': add_awardpoints
+    'awards': add_awardpoints,
+    'd1': add_domaincertpoints
 }
 
 # Stage - 2: Approval Flow Operations

@@ -107,9 +107,8 @@ class ipr(models.Model):
         
 class phd(models.Model):
     choices = (
-        ['Guideship', 'Guideship'],
-        ['Ongoing Scholar', 'Ongoing Scholar'],
-        ['Completed Scholar', 'Completed Scholar'],
+        ['Ongoing', 'Ongoing'],
+        ['Completed', 'Completed'],
         )
     type = models.CharField(max_length=50, choices=choices)
     domain = models.CharField(max_length=50)
@@ -149,7 +148,7 @@ class r1(models.Model):
     type = models.CharField(max_length=25, choices=types)
     timeperiods = models.CharField(max_length=50, choices=timeperiods)
     department = models.ForeignKey(department, on_delete=models.SET_NULL, null=True)
-    staffs = models.ManyToManyField(staff)
+    staffs = models.ForeignKey(staff, on_delete=models.SET_NULL, null=True)
     
     hodapproval = models.BooleanField(verbose_name="HoD Approval Status", default=False, null=True)
     controller = models.BooleanField(verbose_name="Controller Approval Status", default=False, null=True)
@@ -205,6 +204,7 @@ class r2(models.Model):
     certificateno = models.CharField(max_length=35, unique=True)
     staffs = models.ForeignKey(staff, on_delete=models.CASCADE, null=True)
     department = models.ForeignKey(department, on_delete=models.SET_NULL, null=True)
+    verification = models.BooleanField(null=True)
     date = models.DateField()
     
     # Verification process

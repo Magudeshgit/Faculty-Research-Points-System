@@ -190,3 +190,105 @@ def add_awardpoints(_instance):
     rp.rctr.add(cr)
     rp.save()
     
+def add_r1points(_instance):
+    calculated_points = 0
+    instance = centralmodels[_instance.category.name].objects.get(id=_instance.achievementid)
+    
+    rc = rewardcategory.objects.get(name='r1')
+    criterias = rc.criterias.all()
+    cr = ''
+    # Special Case: referencing serial instead of description
+    for criteria in criterias:
+        # print(criteria.serial, instance.institutiontype)
+        if criteria.description == instance.timeperiods:
+            calculated_points += criteria.points
+            cr = criteria
+            
+    rp = rewardpoints.objects.create(
+        staff=instance.staffs,
+        rc=rc,
+        achid=_instance,
+        points=calculated_points
+    )
+    rp.rctr.add(cr)
+    rp.save()
+            
+def add_r2points(_instance):
+    calculated_points = 0
+    instance = centralmodels[_instance.category.name].objects.get(id=_instance.achievementid)
+    
+    rc = rewardcategory.objects.get(name='r2')
+    criterias = rc.criterias.all()
+    cr = ''
+    
+    # Special Case: referencing serial instead of description
+    for criteria in criterias:
+        print(criteria.description, instance.duration)
+        if criteria.description == instance.duration:
+            calculated_points += criteria.points
+            cr = criteria
+            
+    rp = rewardpoints.objects.create(
+        staff=instance.staffs,
+        rc=rc,
+        achid=_instance,
+        points=calculated_points
+    )
+    rp.rctr.add(cr)
+    rp.save()
+
+def add_domaincertpoints(_instance):
+    calculated_points = 0
+    instance = centralmodels[_instance.category.name].objects.get(id=_instance.achievementid)
+    
+    rc = rewardcategory.objects.get(name='d1')
+    criterias = rc.criterias.all()
+    cr = ''
+    
+    # Special Case: referencing serial instead of description
+    for criteria in criterias:
+        calculated_points += criteria.points
+        cr = criteria
+            
+    rp = rewardpoints.objects.create(
+        staff=instance.staffs,
+        rc=rc,
+        achid=_instance,
+        points=calculated_points
+    )
+    rp.rctr.add(cr)
+    rp.save()
+    
+def add_phdpoints(_instance):
+    calculated_points = 0
+    instance = centralmodels[_instance.category.name].objects.get(id=_instance.achievementid)
+    
+    rc = rewardcategory.objects.get(name='phd')
+    criterias = rc.criterias.all()
+    cr = ''
+    
+    for criteria in criterias:
+        if criteria.description == instance.type:
+            calculated_points +=criteria.points
+            cr = criteria
+    _staffs = instance.staffs.all()
+    # Supervisor Score
+    rp = rewardpoints.objects.create(
+        staff=instance.supervisor,
+        rc=rc,
+        achid=_instance,
+        points = calculated_points*_staffs.count()
+    )
+    rp.rctr.add(cr)
+    rp.save()
+    
+    # Staff Score
+    for staff in _staffs:
+        rp = rewardpoints.objects.create(
+        staff=staff,
+        rc=rc,
+        achid=_instance,
+        points = calculated_points
+    )
+    rp.rctr.add(cr)
+    rp.save()
