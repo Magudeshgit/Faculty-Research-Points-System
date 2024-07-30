@@ -11,12 +11,15 @@ from django.db.models import Q
 from django.db.models import Sum
 from django.views.decorators.csrf import csrf_exempt
 from . import model as coursemodel
+import time
 
 # Course Verifier ML MODEL
 @csrf_exempt
 def verifycourse(request, keyword):
     if request.method == 'POST':
+        st = time.time()
         prediction = coursemodel.predict([keyword])
+        print("Prediction time.: ", time.time()-st)
         if prediction:
             return JsonResponse({"keyword":keyword, "prediction": True})
         else:

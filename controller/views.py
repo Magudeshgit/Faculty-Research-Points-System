@@ -47,3 +47,6 @@ def approve(request, category, id):
     obj.save()
     messages.success(request, 'Proposal Approved!')
     return redirect('/pendingapprovals')
+
+def achievementspage(request):
+    return render(request, 'controller/achievements.html')

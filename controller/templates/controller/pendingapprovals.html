@@ -71,7 +71,17 @@
                         </a>
                     </td>
                     <td scope="row" class="px-6 py-4">
-                        {{object.category.name | title}}
+                        {% if object.category.name == 'r1' %}
+                            Research Related Attendings
+                        {% elif object.category.name == 'r2' %}
+                            Research Related Courses
+                        {% elif object.category.name == 'r3' %}
+                            Acted as a Resource Person
+                        {% elif object.category.name == 'd1' %}
+                            Domain Certifications
+                        {% else %}
+                            {{object.category.name|title}}
+                        {% endif %}
                     </td>
                     <td scope="row" class="hover:underline px-6 py-4 whitespace-nowrap">
                         {{object.date}}

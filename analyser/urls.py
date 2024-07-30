@@ -75,4 +75,6 @@ urlpatterns = [
     path('pendingproposals/', btv.pendingproposals, name="approvalapplication"),
     path('pendingapprovals/', btv.pendingapprovals),
     path('approve/<str:category>/<int:id>/', btv.approve, name='approve'),
+    
+    path('achievements/', btv.achievementspage, name='approve'),
 ]

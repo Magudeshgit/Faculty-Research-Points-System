@@ -13,6 +13,7 @@ centralmodels = {
     'awards': awards,
     'd1': d1
 }
+AY = "01/06/"
 
 def add_publicationpoints(_instance):
     # Criteria: Publication index and no of staff members
@@ -133,7 +134,7 @@ def add_iprpoints(_instance):
             
     staffs = instance.staffs.all()
     calculated_points = calculated_points / staffs.count()
-    
+    # Divide points for ipr based oncount
     for staff in staffs:
         rp = rewardpoints.objects.create(
             staff = staff,
