@@ -7,49 +7,213 @@
     <title>Achievements</title>
     {% tailwind_css %}
 </head>
-<body class="bg-[#ebedf0]">
+<body class="bg-white max-w-[100vw] overflow-x-hidden">
     {% include 'central/nav.html' %}
-    <div class="parent p-4">
-
-        <div class="inistats flex gap-4">
-            <div class="score py-2 px-4 w-[250px] flex flex-col gap-2 bg-slate-50 rounded-md shadow-sm">
-                <p class="text-gray-600">Your Score</p>
-                <p class="font-semibold text-2xl">230 Points</p>
-            </div>
-            <div class="score py-2 px-4 flex flex-col w-[250px] gap-2 bg-slate-50 rounded-md shadow-sm">
-                <p class="text-gray-600">Your Achievements</p>
-                <p class="font-semibold text-2xl">23</p>
-            </div>
+    <div class="parent p-8 grid justify-center grid-cols-1 lg:grid-cols-3 lg:gap-6">
+      <div class="col-span-full">
+        <p class="font-semibold text-2xl">Your Achievements</p>
+      </div>
+      <div class="inistats col-span-full flex gap-4 mt-2 flex-wrap lg:flex-nowrap">
+        <div class="flex flex-col shadow-sm w-full border-[1px] border-gray-200 p-4 rounded-md">
+          <p class="text-gray-400 text-sm">Your Score</p>
+          <p class="font-medium text-gray-950 text-2xl">144</p>
         </div>
-
-        <div class="data ">
-            <canvas id="myChart" class="max-h-[300px]"></canvas>
+        <div class="flex flex-col shadow-sm w-full border-[1px] border-gray-200 p-4 rounded-md">
+          <p class="text-gray-400 text-sm">Your Achievements</p>
+          <p class="font-medium text-gray-950 text-2xl">12</p>
         </div>
+        <div class="flex flex-col shadow-sm w-full border-[1px] border-gray-200 p-4 rounded-md">
+          <p class="text-gray-400 text-sm">Top Categories</p>
+          <p class="font-medium text-gray-950 text-2xl">5</p>
+        </div>
+      </div>
+
+      <!-- Bar Chart -->
+       <div class="col-span-full">
+          <p class="font-medium underline text-xl">Statistics</p>
+       </div>
+        <div class="data col-span-full lg:col-span-2">
+            <canvas id="barchart" class="max-h-[300px]"></canvas>
+        </div>
+        <div class="data col-span-full lg:col-span-1 gap-4">
+          <p class="font-medium">Top Categories</p>
+            <canvas id="doughnutchart" class="mt-4"></canvas>
+        </div>
+       
+
+        
+
+      <div class="col-span-2 mt-4 overflow-x-auto">
+        <p class="font-medium">Recent Achievements</p>
+        <table class="border-gray-200 border-[1px] mt-4 min-w-full text-left text-gray-500 bg-white dark:text-gray-400 rounded-md overflow-x-scroll max-w-full">
+          <thead class="border-b text-gray-900 dark:text-gray-400">
+              <tr>
+                  <th scope="col" class="px-6 py-3">
+                      Category
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      Title
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      Date
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      Points
+                  </th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr class="border-b">
+                  <td scope="row" class="hover:underline px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                      Publication
+                  </td>
+                  <td scope="row" class="px-6 py-4">
+                      Advanced Transformation Techniques
+                  </td>
+                  <td class="px-6 py-4">
+                      July, 4th, 2024
+                  </td>
+                  <td class="px-6 py-4">
+                      40
+                  </td>
+              </tr>
+
+              <tr class="border-b">
+                <td scope="row" class="hover:underline px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    Publication
+                </td>
+                <td scope="row" class="px-6 py-4">
+                    Material Psychology
+                </td>
+                <td class="px-6 py-4">
+                    May, 4th, 2024
+                </td>
+                <td class="px-6 py-4">
+                    20.5
+                </td>
+            </tr>
+          </tbody>
+          </table>
+      </div>
+      <div class="col-span-1 mt-4">
+        <p class="font-medium">Department Leaderboard</p>
+        <table class="border-gray-200 mt-4 border-[1px] text-left min-h-full text-gray-500 bg-white dark:text-gray-400 rounded-md overflow-x-auto w-full">
+          <thead class="border-b text-gray-900 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    Position
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Name
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Points
+                </th>
+            </tr>
+        </thead>
+          <tbody>
+              <tr class="border-b">
+                  <td scope="row" class="hover:underline px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                      1st
+                  </td>
+                  <td scope="row" class="px-6 py-4">
+                      John Doe
+                  </td>
+                  <td class="px-6 py-4">
+                      243 Points
+                  </td>
+              </tr>
+
+              <tr class="border-b">
+                <td scope="row" class="hover:underline px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    2nd
+                </td>
+                <td scope="row" class="px-6 py-4">
+                    Abraham
+                </td>
+                <td class="px-6 py-4">
+                    200 Points
+                </td>
+            </tr>
+
+            <tr class="border-b">
+              <td scope="row" class="hover:underline px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                  3rd
+              </td>
+              <td scope="row" class="px-6 py-4">
+                  Samson 
+              </td>
+              <td class="px-6 py-4">
+                  180 Points
+              </td>
+          </tr>
+          </tbody>
+          </table>
+      </div>
+
+      <!-- Doughnut Chart -->
     </div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const ctx = document.getElementById('myChart');
+    const ctx = document.getElementById('barchart');
+    const dtx = document.getElementById('doughnutchart');
+    const colorPalette = [
+  "#FFB6C1", // Light Pink
+  "#E6E6FA", // Lavender
+  "#F0E68C", // Khaki
+  "#FFDAB9", // Peach Puff
+  "#E0FFFF", // Light Cyan
+  "#F5DEB3", // Wheat
+  "#D8BFD8", // Thistle
+  "#FAFAD2"  // Light Goldenrod Yellow
+];
+
+
   
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: [
+          'Publications', 
+          'IPR', 
+          'PhDs', 
+          'Awards', 
+          'Funding', 
+          'Consultancy', 
+          'Attending (STTP/FDP)', 
+          'Course Certifications',
+        ],
         datasets: [{
-          label: '# of Votes',
-          data: [12, 19, 3, 5, 2, 3],
-          borderWidth: 1
+          data: [5, 2, 3,2,6,1,3,4],
+          borderWidth: 1, 
+          backgroundColor: colorPalette, 
         }]
       },
       options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
+        indexAxis: 'y',
+        legend: {
+          display: false,
         }
       }
+
     });
+
+    new Chart(dtx, {
+      type: 'doughnut',
+      data: {
+        labels: [
+          'Publications', 
+          'IPR', 
+          'PhDs', 
+        ],
+        datasets: [{
+          data: [5, 2, 3],
+          // backgroundColor: ["#FFD6F1", "#E1FFD6", "#FCFFD6", "#FFD6DD", "#C8E2FF", "#FFF1D6"], 
+        }]
+      },
+    })
   </script>
 </body>
 </html>

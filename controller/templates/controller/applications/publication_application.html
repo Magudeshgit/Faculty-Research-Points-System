@@ -13,54 +13,69 @@
     <div class="bg-white max-w-[90%] rounded-md py-6 px-0 mx-auto">
         <div class="px-4 sm:px-0">
           <h3 class="text-xl font-semibold leading-7 text-gray-900">{{request.user.groups.first.name}} Approval</h3>
-          <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Publication Application form</p>
+          <p class="mt-1 max-w-2xl text-base leading-6 text-gray-500">Publication Application form</p>
         </div>
         <div class="mt-6 border-t border-gray-100">
           <dl class="divide-y divide-gray-100">
             
             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">Reference No</dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.id}}</dd>
+              <dt class="text-base font-medium leading-6 text-gray-900">Reference No</dt>
+              <dd class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.id}}</dd>
             </div>
 
             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">Title</dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.title}}</dd>
+              <dt class="text-base font-medium leading-6 text-gray-900">Title</dt>
+              <dd class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.title}}</dd>
             </div>
 
             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">ISSN No</dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.issn}}</dd>
+              <dt class="text-base font-medium leading-6 text-gray-900">Type</dt>
+              <dd class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.publication}}</dd>
             </div>
 
             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">DOI No</dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.doi}}</dd>
+              <dt class="text-base font-medium leading-6 text-gray-900">DOI No</dt>
+              <dd class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.doi}}</dd>
             </div>
 
             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">URL</dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.url}}</dd>
+              <dt class="text-base font-medium leading-6 text-gray-900">ISSN No</dt>
+              <dd class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.issn}}</dd>
             </div>
 
             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">Guide</dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.guide}}</dd>
+              <dt class="text-base font-medium leading-6 text-gray-900">ISBN No</dt>
+              <dd class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.isbn}}</dd>
             </div>
 
             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">Department</dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.department}}</dd>
+              <dt class="text-base font-medium leading-6 text-gray-900">URL</dt>
+              <dd class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <a href="{{object.url}}" class="underline flex gap-2" target="_blank">
+                  <img src="{% static 'images/link.svg' %}" alt="" class="opacity-65">
+                  {{object.url}}
+                </a>
+              </dd>
             </div>
 
             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">Date of Publication</dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.date}}</dd>
+              <dt class="text-base font-medium leading-6 text-gray-900">Department</dt>
+              <dd class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.department}}</dd>
             </div>
 
             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">Staffs</dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+              <dt class="text-base font-medium leading-6 text-gray-900">Date of Publication</dt>
+              <dd class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.date}}</dd>
+            </div>
+
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-base font-medium leading-6 text-gray-900">Total Co-Authors Involved (Including external institutions)</dt>
+              <dd class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{object.count}}</dd>
+            </div>
+
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-base font-medium leading-6 text-gray-900">Staffs</dt>
+              <dd class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 {% for author in object.authors.all %}
                 {{author.username}},
                 {% endfor %}
@@ -68,8 +83,8 @@
             </div>
 
             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">Contact No</dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+              <dt class="text-base font-medium leading-6 text-gray-900">Contact No</dt>
+              <dd class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 {{object.authors.first.phone}}
               </dd>
             </div>
@@ -77,8 +92,8 @@
 
 
             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">HoD Approval Status</dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+              <dt class="text-base font-medium leading-6 text-gray-900">HoD Approval Status</dt>
+              <dd class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 {% if object.hodapproval %}
                   Approved
                 {% else %}
@@ -88,8 +103,8 @@
             </div>
 
             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">Controller Approval Status</dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+              <dt class="text-base font-medium leading-6 text-gray-900">Controller Approval Status</dt>
+              <dd class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 {% if object.controller %}  
                   Approved
                 {% else %}
@@ -102,13 +117,13 @@
         </div>
         <div class="mt-6 flex gap-2">
           <a href="{% url 'approve' category='publication' id=object.id %}">
-            <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#4f46e5] hover:bg-[#645cff] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
+            <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#4f46e5] hover:bg-[#645cff] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-5 py-2.5 me-2 mb-2">
                 Approve 
                 <img src="{% static 'images/Check.svg' %}" class="min-w-[20px] min-h-[20px]">
             </button>
           </a>
           <!-- <a href="/">
-            <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#cb4343] hover:bg-[#e65151] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
+            <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#cb4343] hover:bg-[#e65151] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-5 py-2.5 me-2 mb-2">
                 Disapprove
                 <img src="{% static 'images/Cross.svg' %}" class="min-w-[20px] min-h-[20px]">
             </button>

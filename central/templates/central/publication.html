@@ -66,17 +66,12 @@
                 </thead>
                 <tbody>
                     {% for publication in publications %}
-
-                    <tr class="border-b">
+                    <tr class="border-b"    >
                         <td scope="row" class="hover:underline px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            <a href="">
                             {{publication.title}}
-                            </a>
                         </td>
                         <td scope="row" class="px-6 py-4">
-                            <a href="">
                             {{publication.publication}}
-                            </a>
                         </td>
                         <td class="px-6 py-4">
                             {{publication.issn}}

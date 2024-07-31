@@ -32,7 +32,7 @@ def home(request):
     achievement_count = achievements.objects.filter(staff=request.user, approvalstatus='Controller Approved').count()
     score = rewardpoints.objects.filter(staff=request.user).aggregate(Sum('points'))['points__sum']
     pending_count = achievements.objects.filter(Q(approvalstatus='Not Approved') | Q(approvalstatus='HoD Approved'), staff=request.user).count()
-    context = {'ach_count': achievement_count, 'pen_count':pending_count, 'score': score}
+    context = {'ach_count': achievement_count, 'pen_count':pending_count, 'score': round(score,2)}
     return render(request, 'central/home2.html', context)
 
 @login_required
@@ -43,34 +43,31 @@ def submitted(request, id):
 # Publication
 @login_required
 def publication(request):
-    publications = publ.objects.filter(Q(authors=request.user) | Q(guide=request.user), controller=True)
+    publications = publ.objects.filter(Q(authors=request.user), controller=True)
     print(request.user.groups)
     return render(request, 'central/publication.html', {"publications": publications})
 
 @login_required
 def publication_application(request):
-    context = {'error': '', 'title': '', 'publication':'', 'doi': '', 'issn': '' ,'url': '', 'authorcount': '', 'submitted': False}
+    context = {'error': '', 'submitted': False}
     data = {}
     staffobj = []
     guide = None
-    formfields = ['title','publication', 'doi', 'issn', 'url','date', 'staffcount']
+    formfields = ['title','publication', 'doi', 'issn','isbn','count','url','date','staffcount']
     if request.method == 'POST':
+        print(request.POST.get('issn') is '')
         for field in formfields:
             if field != 'staffcount':
-                data[field] = request.POST[field]
+                if request.POST[field] != '':
+                    data[field] = request.POST[field]
             else:
-                if request.POST['guideid'] != '':
-                        guide = staff.objects.get(username=request.POST['guideid'])
                 try:
                     for i in range(1,int(request.POST[field])+1):
                         _username = request.POST['authorid' + str(i)]
-                        if request.POST['guideid'] == _username:
-                            context = {'error' : 'The Guide ID and Author IDs Cannot be same', 'errorhelp': "Kindly correct the errors below."}
-                            return render(request, 'central/publication_application.html', context)
-
                         _staff = staff.objects.get(username=_username)
                         staffobj.append(_staff)
                 except (ObjectDoesNotExist) as e:
+                    
                     context = {
                         'errorhelp': 'Kindly correct the errors below',
                         'error': f'Specified Employee ID or Guide ID of staffs: {_username} is invalid or does not exist',
@@ -78,12 +75,12 @@ def publication_application(request):
                     return render(request, 'central/publication_application.html', context)
                 
         _department = request.POST['department']
+        print(data)
         try:
             department = dept.objects.get(name = _department)
             
             obj = publ.objects.create(**data)
             obj.authors.add(*staffobj)
-            obj.guide = guide
             obj.department = department
             
             # Centralizing for Operation 2
@@ -95,7 +92,7 @@ def publication_application(request):
                 category=rc, department=department)
             ach.staff.add(*staffobj)
             
-            # Intentionally Saving macro(consultancy) object after micro(acheievement) object because, 
+            # Intentionally Saving macro(consultancy) object after micro(achievement) object because, 
             # it internally triggers a signal to the micro object which in turn requires 
             # the macro object to saved first.
             
@@ -103,10 +100,12 @@ def publication_application(request):
             obj.save()
             
                 
-        except IntegrityError:
+        except IntegrityError as e:
+            _type = str(e).split('.')[1]
             context = {
+                        'type': _type,
                         'errorhelp': 'Kindly correct the errors below',
-                        'iderror': f'The specified DOI or ISSN No has already been registered',
+                        'iderror': f'The specified {_type.upper()} has already been registered',
                     }
             return render(request, 'central/publication_application.html', context)
             

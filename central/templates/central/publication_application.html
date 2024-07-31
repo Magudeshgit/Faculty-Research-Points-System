@@ -57,14 +57,13 @@
                             <label for="country" class="block text-sm font-medium leading-6 text-gray-900">Ranking Index</label>
                             <div class="mt-2">
                               <select id="country" name="publication" required value="{{index}}" class="block max-w-full lg:min-w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                                <option>Q1</option>
-                                <option>SCOPUS</option>
-                                <option>IEEE</option>
-                                <option>IEEE</option>
-                                <option>CONFERENCES INDEXED</option>
-                                <option>CONFERENCES UGC CARE</option>
-                                <option>BOOK AND BOOK CHAPTERS</option>
-                                <option>IEEE/ELSEVIER/ACM & INTERNATIONAL CONF</option>
+                                <option value="Q1">Q1</option>
+                                <option value="SCOPUS">SCOPUS</option>
+                                <option value="SCIE">SCIE</option>
+                                <option value="SCOPUS INDEXED CONFERENCE">SCOPUS INDEXED CONFERENCE</option>
+                                <option value="UGC CARE INDEXED CONFERENCE">UGC CARE INDEXED CONFERENCE</option>
+                                <option value="INDEXED BOOK">INDEXED BOOK</option>
+                                <option value="INDEXED BOOK CHAPTERS">INDEXED BOOK CHAPTERS</option>
                               </select>
                             </div>
                         </div>
@@ -73,33 +72,47 @@
           
                 <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 fieldswrap">
                   <div class="sm:col-span-3">
-                    <label for="identification" class="block text-sm font-medium leading-6 text-gray-900">DOI No</label>
+                    <label for="identification" class="block text-sm font-medium leading-6 text-gray-900">DOI No (required if journal)</label>
                     <div class="mt-2">
                       <input type="text" name="doi" id="identification" value="{{identification}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                     </div>
-                    <p class="text-xs text-red-600">{{iderror}}</p>
+                    {% if type == 'doi' %}
+                      <p class="text-sm text-red-600">{{iderror}}</p>
+                    {% endif %}
                   </div>
 
                   <div class="sm:col-span-3">
-                    <label for="identification" class="block text-sm font-medium leading-6 text-gray-900">ISSN No</label>
+                    <label for="identification" class="block text-sm font-medium leading-6 text-gray-900">ISSN No (required if book or book chapters)</label>
                     <div class="mt-2">
                       <input type="text" name="issn" id="identification" value="{{identification}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                     </div>
+                    {% if type == 'issn' %}
+                      <p class="text-sm text-red-600">{{iderror}}</p>
+                    {% endif %}
+                  </div>
+                  <div class="sm:col-span-3">
+                    <label for="identification" class="block text-sm font-medium leading-6 text-gray-900">ISBN No (required if book or book chapters)</label>
+                    <div class="mt-2">
+                      <input type="text" name="isbn" id="identification" value="{{identification}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    </div>
+                    {% if type == 'isbn' %}
+                      <p class="text-sm text-red-600">{{iderror}}</p>
+                    {% endif %}
                   </div>
           
                   <div class="sm:col-span-3">
-                    <label for="url" class="block text-sm font-medium leading-6 text-gray-900">URL (optional)</label>
+                    <label for="url" class="block text-sm font-medium leading-6 text-gray-900">URL*</label>
                     <div class="mt-2">
-                      <input type="url" name="url" id="url" value="{{url}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                      <input type="url" required name="url" id="url" value="{{url}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                     </div>
                   </div>
           
                   <div class="sm:col-span-3">
-                    <label for="date" class="block text-sm font-medium leading-6 text-gray-900">Date of Publication</label>
+                    <label for="date" class="block text-sm font-medium leading-6 text-gray-900">Date of Publication*</label>
                     <div class="mt-2">
                       <input id="date" required name="date" type="date" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                     </div>
-                  </div>
+                  </div>  
 
                   <div class="sm:col-span-3">
                     <label for="department" class="block text-sm font-medium leading-6 text-gray-900">Department</label>
@@ -118,14 +131,14 @@
                 </div>
 
                 <div class="sm:col-span-3">
-                  <label for="number" class="block text-sm font-medium leading-6 text-gray-900">Employee ID of Guide (If any)</label>
+                  <label for="number" class="block text-sm font-medium leading-6 text-gray-900">Total Number of Authors Involved (Including external institutions)</label>
                   <div class="mt-2">
-                    <input id="number" name="guideid" type="text" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ">
+                    <input id="number" required name="count" type="number" maxlength="50" value="{{authorcount}}" class="  block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ">
                   </div>
                 </div>
 
                 <div class="sm:col-span-3">
-                  <label for="number" class="block text-sm font-medium leading-6 text-gray-900">No of Staffs from MCET (specify count including yourself)</label>
+                  <label for="number" class="block text-sm font-medium leading-6 text-gray-900">No of Co Authors from MCET (specify count including yourself)</label>
                   <div class="mt-2">
                     <input id="number" required name="staffcount" type="number" maxlength="50" value="{{authorcount}}" class="authorno block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ">
                   </div>

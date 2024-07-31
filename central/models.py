@@ -6,16 +6,18 @@ from authentication.models import staff, department
 # r3 - Acted as a resource person
 
 class publication(models.Model):
-    publication = models.CharField(max_length=50) #Temproary
+    publication = models.CharField(max_length=50)
     title = models.CharField(max_length=100)
-    doi = models.CharField(verbose_name='ISSN No',max_length=25, unique=True)
-    issn = models.CharField(verbose_name='DOI No',max_length=25, unique=True)
+    
+    doi = models.CharField(verbose_name='ISSN No',max_length=25, unique=True, null=True)
+    issn = models.CharField(verbose_name='DOI No',max_length=25, unique=True, null=True)
+    isbn = models.CharField(verbose_name='ISBN No', max_length=25, unique=True, null=True)
     url = models.CharField(verbose_name='URL', max_length=50, null=True)
-    guide = models.ForeignKey(staff, on_delete=models.SET_NULL, null=True, related_name='guide')
+    
+    count = models.PositiveIntegerField()
     authors = models.ManyToManyField(staff)
     department = models.ForeignKey(department, on_delete=models.SET_NULL, null=True)
     date = models.DateField(verbose_name='Date of publication')
-    
     
     # Verification process
     hodapproval = models.BooleanField(verbose_name="HoD Approval Status", default=False, null=True)
