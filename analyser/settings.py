@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import datetime
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -142,3 +143,8 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 AUTH_USER_MODEL = 'authentication.staff'
 LOGIN_URL = '/signin'
 LOGIN_REDIRECT_URL = '/'
+
+
+
+ACADEMIC_YEAR_START = datetime.date(datetime.datetime.now().year, 6,1)
+ACADEMIC_YEAR_END = datetime.date(datetime.datetime.now().year +1, 5,1)

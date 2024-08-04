@@ -1,0 +1,361 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Analytics</title>
+    {% tailwind_css %}
+    <style>
+  .scrollbar::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: transparent;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #c8c6c6;
+    border-radius: 100vh; 
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #dedcdd;
+  }
+    </style>
+</head>
+<body class="bg-white max-w-[100vw] overflow-x-hidden">
+    {% include 'central/nav.html' %}
+    <div class="parent p-8 grid justify-center grid-cols-1 lg:grid-cols-3 lg:gap-6">
+      <div class="col-span-full">
+        <p class="font-semibold text-2xl">Report & Analytics</p>
+      </div>
+      <!-- Bar Chart -->
+        <div class="data col-span-full lg:col-span-2">
+            <canvas id="barchart" class="max-h-[300px]"></canvas>
+        </div>
+        <div class="data col-span-full lg:col-span-1 gap-4">
+          <p class="font-medium">Department Contributions</p>
+            <canvas id="doughnutchart" class="mt-4"></canvas>
+        </div>
+
+      <div class="scrollbar col-span-2 mt-4 overflow-x-auto max-h-[400px] overflow-auto">
+        <div class="flex justify-between">
+            <p class="font-semibold text-xl">Staff Data</p>
+        </div>
+        <table class="border-gray-200 border-[1px] mt-4 text-left text-gray-500 bg-white dark:text-gray-400 rounded-md overflow-x-scroll min-w-full">
+          <thead class="border-b text-gray-900 dark:text-gray-400">
+              <tr>
+                  <th scope="col" class="px-6 py-3">
+                      Staff Name
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      Department
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      Points
+                  </th>
+              </tr>
+          </thead>
+          <tbody>
+            {% for staff in staff_data %}
+            <tr class="border-b">
+                <td scope="row" class="hover:underline px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    {{staff.staff__first_name}}
+                </td>
+                <td scope="row" class="px-6 py-4">
+                    {{staff.staff__dept__name}}
+                </td>
+                <td class="px-6 py-4">
+                    {{staff.points__sum}}
+                </td>
+              </tr>
+              {% endfor %}
+                </tbody>
+          </table>
+      </div>
+      <div class="scrollbar col-span-1 mt-4 max-h-[400px] overflow-auto">
+        <p class="font-medium">Department Leaderboard</p>
+        <table class="border-gray-200 mt-4 border-[1px] text-left min-h-full text-gray-500 bg-white dark:text-gray-400 rounded-md overflow-x-auto w-full">
+          <thead class="border-b text-gray-900 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    Position
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Name
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Points
+                </th>
+            </tr>
+        </thead>
+        {% for leader in department_leaderboard %}
+          <tbody>
+              <tr class="border-b">
+                  <td scope="row" class="hover:underline px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                      {% if forloop.counter == 1 %}
+                        <b>1st</b>
+                      {% elif forloop.counter == 2 %}
+                        <b>2nd</b>
+                      {% elif forloop.counter == 3 %}
+                        <b>3rd</b>
+                      {% else %}
+                        <p class="text-slate-500">{{forloop.counter}}</p>
+                      {%endif%}
+                  </td>
+                  <td scope="row" class ="px-6 py-4">
+                      {{leader.department__name}}
+                  </td>
+                  <td class="px-6 py-4">
+                      {{leader.id__count}}
+                  </td>
+              </tr>
+              {% endfor %}
+          </tbody>
+          </table>
+      </div>
+
+      <div class="col-span-full">
+        <p class="font-medium text-xl">Exports</p>
+        <table class="border-gray-200 mt-4 border-[1px] text-left min-h-full text-gray-500 bg-white dark:text-gray-400 rounded-md overflow-x-auto w-full">
+            <thead class="border-b text-gray-900 dark:text-gray-400">
+              <tr>
+                  <th scope="col" class="px-6 py-3">
+                      Available Exports
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      Action
+                  </th>
+              </tr>
+          </thead>
+            <tbody>
+                <tr class="border-b">
+                    <td scope="row" class ="px-6 py-4 text-gray-800 font-medium">
+                        Research Points for each staff 
+                    </td>
+                    <td class="px-6 py-4">
+                        <a href="/genreport">
+                            <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#4f46e5] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                Download
+                                <img src="{% static 'images/download.svg' %}" class="min-w-[20px] min-h-[20px] ">
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+
+                <tr class="border-b">
+                    <td scope="row" class ="px-6 py-4 text-gray-800">
+                        Publication Data of Current Academic Year  
+                    </td>
+                    <td class="px-6 py-4">
+                        <a href="/achievementreport/publication">
+                            <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#4f46e5] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                Download
+                                <img src="{% static 'images/download.svg' %}" class="min-w-[20px] min-h-[20px] ">
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+
+                <tr class="border-b">
+                    <td scope="row" class ="px-6 py-4 text-gray-800">
+                        Consultancy Data of Current Academic Year  
+                    </td>
+                    <td class="px-6 py-4">
+                        <a href="/achievementreport/consultancy">
+                            <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#4f46e5] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                Download
+                                <img src="{% static 'images/download.svg' %}" class="min-w-[20px] min-h-[20px] ">
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+
+                <tr class="border-b">
+                    <td scope="row" class ="px-6 py-4 text-gray-800">
+                        Funding Data of Current Academic Year  
+                    </td>
+                    <td class="px-6 py-4">
+                        <a href="/achievementreport/funding">
+                            <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#4f46e5] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                Download
+                                <img src="{% static 'images/download.svg' %}" class="min-w-[20px] min-h-[20px] ">
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+
+                <tr class="border-b">
+                    <td scope="row" class ="px-6 py-4 text-gray-800">
+                        IPR Data of Current Academic Year  
+                    </td>
+                    <td class="px-6 py-4">
+                        <a href="/achievementreport/ipr">
+                            <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#4f46e5] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                Download
+                                <img src="{% static 'images/download.svg' %}" class="min-w-[20px] min-h-[20px] ">
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+
+                <tr class="border-b">
+                    <td scope="row" class ="px-6 py-4 text-gray-800">
+                        Research Related Attendings of Current Academic Year  
+                    </td>
+                    <td class="px-6 py-4">
+                        <a href="/achievementreport/r1">
+                            <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#4f46e5] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                Download
+                                <img src="{% static 'images/download.svg' %}" class="min-w-[20px] min-h-[20px] ">
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+
+                <tr class="border-b">
+                  <td scope="row" class ="px-6 py-4 text-gray-800">
+                      Research Related Courses of Current Academic Year  
+                  </td>
+                  <td class="px-6 py-4">
+                      <a href="/achievementreport/r2">
+                          <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#4f46e5] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                              Download
+                              <img src="{% static 'images/download.svg' %}" class="min-w-[20px] min-h-[20px] ">
+                          </button>
+                      </a>
+                  </td>
+              </tr>
+
+              <tr class="border-b">
+                <td scope="row" class ="px-6 py-4 text-gray-800">
+                    Acted as a resource person data 
+                </td>
+                <td class="px-6 py-4">
+                    <a href="/achievementreport/r3">
+                        <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#4f46e5] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                            Download
+                            <img src="{% static 'images/download.svg' %}" class="min-w-[20px] min-h-[20px] ">
+                        </button>
+                    </a>
+                </td>
+            </tr>
+
+            <tr class="border-b">
+              <td scope="row" class ="px-6 py-4 text-gray-800">
+                  Domain Certifications Data
+              </td>
+              <td class="px-6 py-4">
+                  <a href="/achievementreport/d1">
+                      <button type="button" class=" flex gap-2 items-center justify-between text-white bg-[#4f46e5] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                          Download
+                          <img src="{% static 'images/download.svg' %}" class="min-w-[20px] min-h-[20px] ">
+                      </button>
+                  </a>
+              </td>
+          </tr>
+            </tbody>
+            </table>
+      </div>
+    </div>
+<p class="department hidden">{{department_count}}</p>
+<p class="achievement hidden">{{achievement_count}}</p>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  let department = JSON.parse(document.querySelector('.department').innerHTML)
+  let achievement = JSON.parse(document.querySelector('.achievement').innerHTML)
+
+  let dataset_labels = new Array()
+  let dataset_values = new Array()
+
+//   let achdataset_values = new Array()
+  let achdataset_values = new Array()
+
+  const ctx = document.getElementById('barchart');
+  const dtx = document.getElementById('doughnutchart');
+  const colorPalette = [
+  "#FFB6C1", // Light Pink
+  "#E6E6FA", // Lavender
+  "#F0E68C", // Khaki
+  "#FFDAB9", // Peach Puff
+  "#E0FFFF", // Light Cyan
+  "#F5DEB3", // Wheat
+  "#D8BFD8", // Thistle
+  "#FAFAD2"  // Light Goldenrod Yellow
+];
+
+   let category_mapping = 
+    [
+        'Publication',
+        'Consultancy',
+        'Funding',
+        'IPR',
+        'PhD',
+        'Research related Attendings',
+        'Acted as Resource Person',
+        'Research Related Course Certifications',
+        'Awards',
+        'Domain Certifications'
+    ] 
+
+department.forEach(element => {
+    console.log(element)
+    dataset_labels.push(element.department__name)
+    dataset_values.push(element.department__count)
+});
+
+achievement.forEach(element => {
+  achdataset_values[element.category-1] = element.category__count
+});
+
+console.log(dataset_values)
+  
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: category_mapping,
+        datasets: [
+          {
+            label: 'Data Aggregation',
+            data: achdataset_values,
+            backgroundColor: colorPalette,
+          },
+        ],
+      },
+
+      options: {
+        indexAxis: 'x',
+        legend: {
+          display: false,
+        },
+        tooltips: {enabled: false},
+        hover: {mode: null},
+        plugins: {
+          title: 
+        {
+          display: true,
+          text: 'Contributions'
+        }
+        }
+      }
+
+    });
+
+    new Chart(dtx, {
+      type: 'doughnut',
+      data: {
+        labels: dataset_labels,
+        datasets: [{
+          // label: "Something",
+          data: dataset_values,
+        }]
+      },
+    })
+  </script>
+</body>
+</html>

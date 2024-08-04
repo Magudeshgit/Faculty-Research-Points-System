@@ -6,6 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Achievements</title>
     {% tailwind_css %}
+    <style>
+  .scrollbar::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: transparent;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #c8c6c6;
+    border-radius: 100vh; 
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #dedcdd;
+  }
+    </style>
 </head>
 <body class="bg-white max-w-[100vw] overflow-x-hidden">
     {% include 'central/nav.html' %}
@@ -16,16 +36,22 @@
       <div class="inistats col-span-full flex gap-4 mt-2 flex-wrap lg:flex-nowrap">
         <div class="flex flex-col shadow-sm w-full border-[1px] border-gray-200 p-4 rounded-md">
           <p class="text-gray-400 text-sm">Your Score</p>
-          <p class="font-medium text-gray-950 text-2xl">144</p>
+          <p class="font-medium text-gray-950 text-2xl">
+            {% if score == None %}
+                0
+            {% else %}
+                {{score|floatformat}}
+            {% endif %}
+        </p>
         </div>
         <div class="flex flex-col shadow-sm w-full border-[1px] border-gray-200 p-4 rounded-md">
           <p class="text-gray-400 text-sm">Your Achievements</p>
-          <p class="font-medium text-gray-950 text-2xl">12</p>
+          <p class="font-medium text-gray-950 text-2xl">{{ach_count}}</p>
         </div>
-        <div class="flex flex-col shadow-sm w-full border-[1px] border-gray-200 p-4 rounded-md">
+        <!-- <div class="flex flex-col shadow-sm w-full border-[1px] border-gray-200 p-4 rounded-md">
           <p class="text-gray-400 text-sm">Top Categories</p>
           <p class="font-medium text-gray-950 text-2xl">5</p>
-        </div>
+        </div> -->
       </div>
 
       <!-- Bar Chart -->
@@ -43,9 +69,9 @@
 
         
 
-      <div class="col-span-2 mt-4 overflow-x-auto">
+      <div class="scrollbar col-span-2 mt-4 overflow-x-auto max-h-[400px] overflow-auto">
         <p class="font-medium">Recent Achievements</p>
-        <table class="border-gray-200 border-[1px] mt-4 min-w-full text-left text-gray-500 bg-white dark:text-gray-400 rounded-md overflow-x-scroll max-w-full">
+        <table class="border-gray-200 border-[1px] mt-4 text-left text-gray-500 bg-white dark:text-gray-400 rounded-md overflow-x-scroll min-w-full">
           <thead class="border-b text-gray-900 dark:text-gray-400">
               <tr>
                   <th scope="col" class="px-6 py-3">
@@ -63,39 +89,36 @@
               </tr>
           </thead>
           <tbody>
-              <tr class="border-b">
-                  <td scope="row" class="hover:underline px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                      Publication
-                  </td>
-                  <td scope="row" class="px-6 py-4">
-                      Advanced Transformation Techniques
-                  </td>
-                  <td class="px-6 py-4">
-                      July, 4th, 2024
-                  </td>
-                  <td class="px-6 py-4">
-                      40
-                  </td>
-              </tr>
-
-              <tr class="border-b">
+            {% for achievement in recentach %}
+            <tr class="border-b">
                 <td scope="row" class="hover:underline px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    Publication
+                  {% if achievement.rc.name == "r1" %}
+                        <p>Research related attendings STTP/FDP</p>
+                  {% elif achievement.rc.name == 'r2' %}
+                        Research related course certifications
+                  {% elif achievement.rc.name == 'r3' %}
+                        Acted as resource person
+                  {% elif achievement.rc.name == 'd1' %}
+                        Domain certifications
+                  {% else %}
+                        {{achievement.rc|title}}
+                  {% endif %}
                 </td>
                 <td scope="row" class="px-6 py-4">
-                    Material Psychology
+                  {{achievement.achid.title|title}}
                 </td>
                 <td class="px-6 py-4">
-                    May, 4th, 2024
+                    {{achievement.date}}
                 </td>
                 <td class="px-6 py-4">
-                    20.5
+                    {{achievement.points|floatformat}}
                 </td>
-            </tr>
-          </tbody>
+              </tr>
+              {% endfor %}
+                </tbody>
           </table>
       </div>
-      <div class="col-span-1 mt-4">
+      <div class="scrollbar col-span-1 mt-4 max-h-[400px] overflow-auto">
         <p class="font-medium">Department Leaderboard</p>
         <table class="border-gray-200 mt-4 border-[1px] text-left min-h-full text-gray-500 bg-white dark:text-gray-400 rounded-md overflow-x-auto w-full">
           <thead class="border-b text-gray-900 dark:text-gray-400">
@@ -111,55 +134,64 @@
                 </th>
             </tr>
         </thead>
+        {% for leader in leaderboard %}
           <tbody>
               <tr class="border-b">
                   <td scope="row" class="hover:underline px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                      1st
+                      {% if forloop.counter == 1 %}
+                        <b>1st</b>
+                      {% elif forloop.counter == 2 %}
+                        <b>2nd</b>
+                      {% elif forloop.counter == 3 %}
+                        <b>3rd</b>
+                      {% else %}
+                        <p class="text-slate-500">{{forloop.counter}}</p>
+                      {%endif%}
                   </td>
-                  <td scope="row" class="px-6 py-4">
-                      John Doe
+                  <td scope="row" class ="px-6 py-4">
+                      {{leader.staff__first_name}}
                   </td>
                   <td class="px-6 py-4">
-                      243 Points
+                      {{leader.points__sum|floatformat}}
                   </td>
               </tr>
-
-              <tr class="border-b">
-                <td scope="row" class="hover:underline px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    2nd
-                </td>
-                <td scope="row" class="px-6 py-4">
-                    Abraham
-                </td>
-                <td class="px-6 py-4">
-                    200 Points
-                </td>
-            </tr>
-
-            <tr class="border-b">
-              <td scope="row" class="hover:underline px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  3rd
-              </td>
-              <td scope="row" class="px-6 py-4">
-                  Samson 
-              </td>
-              <td class="px-6 py-4">
-                  180 Points
-              </td>
-          </tr>
+              {% endfor %}
           </tbody>
           </table>
       </div>
 
       <!-- Doughnut Chart -->
     </div>
-
+<p class="categories hidden">{{categories}}</p>
+<p class="scoresplitup hidden">{{scoresplitup}}</p>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const ctx = document.getElementById('barchart');
-    const dtx = document.getElementById('doughnutchart');
-    const colorPalette = [
+  let categories = JSON.parse(document.querySelector('.categories').innerHTML)
+  let scoresplitup = JSON.parse(document.querySelector('.scoresplitup').innerHTML)
+
+  category_mapping = 
+  [
+    'Publication',
+    'Consultancy',
+    'Funding',
+    'IPR',
+    'PhD',
+    'Research related Attendings',
+    'Acted as Resource Person',
+    'Research Related Course Certifications',
+    'Awards',
+    'Domain Certifications'
+  ] 
+  
+  let dataset_labels = new Array()
+  let dataset_values = [0,0,0,0,0,0,0,0]
+  let scoredataset_values = [0,0,0,0,0,0,0,0]
+  let topcat_values = new Array()
+
+  const ctx = document.getElementById('barchart');
+  const dtx = document.getElementById('doughnutchart');
+  const colorPalette = [
   "#FFB6C1", // Light Pink
   "#E6E6FA", // Lavender
   "#F0E68C", // Khaki
@@ -171,30 +203,42 @@
 ];
 
 
+categories.forEach(element => {
+  dataset_values[element.category-1] = element.category__count
+});
+
+scoresplitup.forEach(element => {
+  scoredataset_values[element.rc-1] = element.total_points
+})
+
+console.log(dataset_values)
   
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: [
-          'Publications', 
-          'IPR', 
-          'PhDs', 
-          'Awards', 
-          'Funding', 
-          'Consultancy', 
-          'Attending (STTP/FDP)', 
-          'Course Certifications',
+        labels: category_mapping,
+        datasets: [
+          {
+            label: 'Data Aggregation',
+            data: scoredataset_values,
+            backgroundColor: colorPalette,
+          },
         ],
-        datasets: [{
-          data: [5, 2, 3,2,6,1,3,4],
-          borderWidth: 1, 
-          backgroundColor: colorPalette, 
-        }]
       },
+
       options: {
         indexAxis: 'y',
         legend: {
           display: false,
+        },
+        tooltips: {enabled: false},
+        hover: {mode: null},
+        plugins: {
+          title: 
+        {
+          display: true,
+          text: 'Score Splitup'
+        }
         }
       }
 
@@ -209,8 +253,8 @@
           'PhDs', 
         ],
         datasets: [{
-          data: [5, 2, 3],
-          // backgroundColor: ["#FFD6F1", "#E1FFD6", "#FCFFD6", "#FFD6DD", "#C8E2FF", "#FFF1D6"], 
+          // label: "Something",
+          data: [dataset_values[0], dataset_values[3], dataset_values[4]],
         }]
       },
     })

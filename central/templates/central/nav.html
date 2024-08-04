@@ -39,6 +39,9 @@
                {% if request.user.groups.first.name == 'Controller' or request.user.groups.first.name == 'HoD'%}
                <a href="/pendingapprovals" class="block rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-slate-100 hover:text-black">Pending Approvals</a>
                {% endif %}
+               {% if request.user.groups.first.name == 'Controller'%}
+               <a href="/report" class="block rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-slate-100 hover:text-black">Report & Analytics</a>
+               {% endif %}
              </div>
            </div>
          </div>
@@ -97,6 +100,9 @@
          {% if request.user.groups.first.name == 'Controller' or request.user.groups.first.name == 'HoD'%}
                <a href="/pendingapprovals" class="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-slate-100 hover:text-black">Pending Approvals</a>
           {% endif %}
+          {% if request.user.groups.first.name == 'Controller'%}
+               <a href="/report" class="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-slate-100 hover:text-black">Report & Analytics</a>
+               {% endif %}
      
        </div>
      </div>

@@ -53,7 +53,17 @@
                         </a>
                     </td>
                     <td scope="row" class="px-6 py-4">
-                        {{object.category.name | title}}
+                        {% if achievement.rc.name == "r1" %}
+                                <p>Research related attendings STTP/FDP</p>
+                        {% elif achievement.rc.name == 'r2' %}
+                                Research related course certifications
+                        {% elif achievement.rc.name == 'r3' %}
+                                Acted as resource person
+                        {% elif achievement.rc.name == 'd1' %}
+                                Domain certifications
+                        {% else %}
+                                {{achievement.rc|title}}
+                        {% endif %}
                     </td>
                     <td scope="row" class="hover:underline px-6 py-4 whitespace-nowrap">
                         {{object.date}}

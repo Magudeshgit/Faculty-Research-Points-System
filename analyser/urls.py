@@ -20,6 +20,7 @@ from django.urls import path
 from authentication import views as atv
 from central import views as ctv
 from controller import views as btv
+from controller import exporter as etv
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -76,5 +77,10 @@ urlpatterns = [
     path('pendingapprovals/', btv.pendingapprovals),
     path('approve/<str:category>/<int:id>/', btv.approve, name='approve'),
     
-    path('achievements/', btv.achievementspage, name='approve'),
+    path('achievements/', btv.achievementspage),
+    path('report/', btv.reportpage),
+    
+    path('staffreport/', btv.staffreport),
+    
+    path('achievementreport/<str:reporttype>/', btv.achievementreport),
 ]

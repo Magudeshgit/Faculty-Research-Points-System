@@ -27,6 +27,11 @@ window.onload = () =>{
 
 function makefields(count)
 {
+  var who = 'Staff';
+  if (window.location.pathname === '/fundingapplication/') 
+  {
+     who = 'CO-PI'
+  }
   for (let index = 1; index < count+1; index++) {
         let pd = document.createElement('div')
         let lb = document.createElement('label')
@@ -34,7 +39,7 @@ function makefields(count)
         pd.setAttribute('class', 'sm:col-span-3')
         lb.setAttribute('for', 'author')
         lb.setAttribute('class', 'block text-sm font-medium leading-6 text-gray-900')
-        lb.innerText = `Employee ID of Staff ${index}`
+        lb.innerText = `Employee ID of ${who} ${index}`
         int.setAttribute('id', 'author')
         int.setAttribute('name', `authorid${index}`)
         int.setAttribute('type', 'text')

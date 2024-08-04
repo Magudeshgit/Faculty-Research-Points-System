@@ -42,7 +42,8 @@ def add_publicationpoints(_instance):
             staff = staff,
             rc = rc,
             achid = _instance,
-            points = divident
+            points = divident,
+            department = staff.dept
             )
         rp.rctr.add(criteria)
         rp.save()
@@ -62,7 +63,8 @@ def add_consultancypoints(_instance):
             staff=staff,
             rc=rc,
             achid=_instance,
-            points = calculated_points * (instance.amount/10000)
+            points = calculated_points * (instance.amount/10000),
+            department = staff.dept
         )
         rp.rctr.add(criteria)
         rp.save()
@@ -83,7 +85,8 @@ def add_fundingpoints(_instance):
                 staff=instance.pi,
                 rc = rc,
                 achid = _instance,
-                points = calculated_points * (instance.amount/10000) 
+                points = calculated_points * (instance.amount/10000),
+                department = staff.dept
         )
         rp.rctr.add(criteria)
         rp.save()
@@ -94,7 +97,8 @@ def add_fundingpoints(_instance):
                 staff=staff,
                 rc=rc,
                 achid=_instance,
-                points = (calculated_points/2) * (instance.amount/10000)
+                points = (calculated_points/2) * (instance.amount/10000),
+                department = staff.dept
             )
             rp.rctr.add(criteria)
             rp.save()
@@ -103,7 +107,8 @@ def add_fundingpoints(_instance):
                 staff=instance.pi,
                 rc = rc,
                 achid = _instance,
-                points = calculated_points
+                points = calculated_points,
+                department = instance.pi.dept
         )
         rp.rctr.add(criteria)
         rp.save()
@@ -114,7 +119,8 @@ def add_fundingpoints(_instance):
                 staff=staff,
                 rc=rc,
                 achid=_instance,
-                points = 2
+                points = 2,
+                department = staff.dept
             )
             rp.rctr.add(criteria)
             rp.save()
@@ -141,7 +147,8 @@ def add_iprpoints(_instance):
             staff = staff,
             rc=rc,
             achid=_instance,
-            points = calculated_points
+            points = calculated_points,
+            department = staff.dept
         )
         rp.rctr.add(cr)
         rp.save()
@@ -164,7 +171,8 @@ def add_r3points(_instance):
         staff=instance.staffs,
         rc=rc,
         achid=_instance,
-        points=calculated_points
+        points=calculated_points,
+        department = instance.staffs.dept
     )
     rp.rctr.add(cr)
     rp.save()
@@ -187,7 +195,8 @@ def add_awardpoints(_instance):
         staff=instance.staffs,
         rc=rc,
         achid=_instance,
-        points=calculated_points
+        points=calculated_points,
+        department = instance.staffs.dept
     )
     rp.rctr.add(cr)
     rp.save()
@@ -210,7 +219,8 @@ def add_r1points(_instance):
         staff=instance.staffs,
         rc=rc,
         achid=_instance,
-        points=calculated_points
+        points=calculated_points,
+        department = instance.staffs.dept
     )
     rp.rctr.add(cr)
     rp.save()
@@ -234,7 +244,8 @@ def add_r2points(_instance):
         staff=instance.staffs,
         rc=rc,
         achid=_instance,
-        points=calculated_points
+        points=calculated_points,
+        department = instance.staffs.dept
     )
     rp.rctr.add(cr)
     rp.save()
@@ -256,7 +267,8 @@ def add_domaincertpoints(_instance):
         staff=instance.staffs,
         rc=rc,
         achid=_instance,
-        points=calculated_points
+        points=calculated_points,
+        department = instance.staffs.dept
     )
     rp.rctr.add(cr)
     rp.save()
@@ -274,23 +286,14 @@ def add_phdpoints(_instance):
             calculated_points +=criteria.points
             cr = criteria
     _staffs = instance.staffs.all()
+    
     # Supervisor Score
     rp = rewardpoints.objects.create(
         staff=instance.supervisor,
         rc=rc,
         achid=_instance,
-        points = calculated_points*_staffs.count()
-    )
-    rp.rctr.add(cr)
-    rp.save()
-    
-    # Staff Score
-    for staff in _staffs:
-        rp = rewardpoints.objects.create(
-        staff=staff,
-        rc=rc,
-        achid=_instance,
-        points = calculated_points
+        points = calculated_points*_staffs.count(),
+        department=instance.supervisor.dept
     )
     rp.rctr.add(cr)
     rp.save()

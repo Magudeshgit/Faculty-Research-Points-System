@@ -62,11 +62,17 @@ class rewardcategory(models.Model):
         
 class rewardpoints(models.Model):
     staff = models.ForeignKey(staff, on_delete=models.CASCADE)
+    department = models.ForeignKey(department, on_delete=models.SET_NULL, null=True)
     rc = models.ForeignKey(rewardcategory, on_delete=models.SET_NULL, null=True, verbose_name="Reward Category")
     achid = models.ForeignKey(achievements, on_delete=models.SET_NULL, null=True, verbose_name='Achievement ID')
     rctr = models.ManyToManyField(criteria, verbose_name='Reward Criteria')
     date = models.DateField(auto_now_add=True)
     points = models.FloatField()
+    
+    def get_name(self, id):
+        name = staff.objects.get(id=id).last_name
+        return name
+        
     
     class Meta:
         verbose_name='Reward Point'
@@ -74,4 +80,4 @@ class rewardpoints(models.Model):
     
     
     def __str__(self):
-        return str(self.achid) + str(self.staff)
+        return str(self.staff)

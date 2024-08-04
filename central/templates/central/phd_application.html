@@ -1,7 +1,7 @@
 {% extends 'central/publication_application.html' %}
 {% load static %}
 {% block title %} PhD | Application {% endblock %}
-{% block header %} Application for Current and Completed PhD Scholars and Their Guides.{% endblock %}
+{% block header %} Application for PhD Guides Only.{% endblock %}
 {% block backurl %} /phd {% endblock %}
 {% block content %} 
 
@@ -38,9 +38,6 @@
                       <select id="department" name="type" required aria-valuenow="{{category}}" class="fundingcategory block min-w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
                         <option value="Ongoing">Ongoing</option>
                         <option value="Completed">Completed</option>
-                        <!-- <option value="Guideship">Guideship</option>
-                        <option value="Scholar - ongoing">Scholar - ongoing</option>
-                        <option value="Scholar - completed">Scholar - completed</option> -->
                     </select>
                     </div>
                   </div>
@@ -58,6 +55,7 @@
                 <p class="text-sm text-red-500">{{iderror}}</p>
               </div>
           </div>
+
           <div class="sm:col-span-3">
             <label for="region" class="block text-sm font-medium leading-6 text-gray-900">Supervisor No</label>
             <div class="mt-2">
@@ -76,30 +74,6 @@
               <input type="date" required name="date" id="identification" value="{{date}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
             </div>
           </div>
-
-          <div class="sm:col-span-3">
-            <label for="department" class="block text-sm font-medium leading-6 text-gray-900">Department</label>
-            <div class="mt-2">
-              <select id="department" name="department" required class="block max-w-full lg:min-w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                    <option value="Information Technology">Information Technology</option>
-                    <option value="Electronics and Electrical Engineering">Electronics and Electrical Engineering</option>
-                    <option value="Electronics and Communication Engineering">Electronics and Communication Engineering</option>
-                    <option value="Mechanical Engineering">Mechanical Engineering</option>
-                    <option value="Civil Engineering">Civil Engineering</option>
-                    <option value="Computer Science Engineering">Computer Science Engineering</option>
-                    <option value="Science and Humanities">Science and Humanities</option>
-                    <option value="Artificial Intelligence and Data Science">Artificial Intelligence and Data Science</option>
-              </select>
-            </div>
-        </div>
-
-        <div class="sm:col-span-3">
-          <label for="number" class="block text-sm font-medium leading-6 text-gray-900">Employee ID of Supervisor (if MCET)</label>
-          <div class="mt-2">
-            <input id="number" required name="supervisorid" type="text" value="{{staffcount}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ">
-          </div>
-          <p class="text-sm text-red-600">{{supervisorerror}}</p>
-        </div>
 
         <div class="sm:col-span-3">
           <label for="number" class="block text-sm font-medium leading-6 text-gray-900">No of Scholars from MCET (specify count including yourself)</label>

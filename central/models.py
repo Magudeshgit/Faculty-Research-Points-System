@@ -31,7 +31,7 @@ class consultancy(models.Model):
     name = models.CharField(max_length=50, unique=True)
     agency = models.CharField(max_length=50)
     startdate = models.DateField()
-    enddate = models.DateField()
+    date = models.DateField()
     amount = models.PositiveIntegerField()
     staffs = models.ManyToManyField(staff)
     department = models.ForeignKey(department, on_delete=models.SET_NULL, null=True)
@@ -52,7 +52,7 @@ class funding(models.Model):
     name = models.CharField(max_length=50, unique=True)
     agency = models.CharField(max_length=50)
     startdate = models.DateField()
-    enddate = models.DateField()
+    date = models.DateField()
     amount = models.PositiveIntegerField()
     
     pi = models.ForeignKey(staff, related_name='pi', on_delete=models.SET_NULL, null=True)

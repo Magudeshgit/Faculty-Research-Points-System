@@ -32,7 +32,7 @@ def home(request):
     achievement_count = achievements.objects.filter(staff=request.user, approvalstatus='Controller Approved').count()
     score = rewardpoints.objects.filter(staff=request.user).aggregate(Sum('points'))['points__sum']
     pending_count = achievements.objects.filter(Q(approvalstatus='Not Approved') | Q(approvalstatus='HoD Approved'), staff=request.user).count()
-    context = {'ach_count': achievement_count, 'pen_count':pending_count, 'score': round(score,2)}
+    context = {'ach_count': achievement_count, 'pen_count':pending_count, 'score': score}
     return render(request, 'central/home2.html', context)
 
 @login_required
@@ -132,7 +132,7 @@ def consultancy_application(request):
         context = {}
         data = {}
         staffobj = []
-        formfields = ['name', 'agency', 'startdate', 'enddate', 'amount', 'staffcount']
+        formfields = ['name', 'agency', 'startdate', 'date', 'amount', 'staffcount']
         for field in formfields:
             if field != 'staffcount':
                 data[field] = request.POST[field]
@@ -145,11 +145,7 @@ def consultancy_application(request):
                 except ObjectDoesNotExist:
                     context = {
                         'error': f'Specified Employee ID of staffs: {_username} is invalid or does not exist',
-                        'name': data['name'],
-                        'agency': data['agency'],
-                        'startdate': data['startdate'],
-                        'enddate': data['enddate'],
-                        'amount': data['amount'],
+                        'errorhelp':'Kindly correct the errors below'
                     }
                     return render(request, 'central/consultancy_application.html', context)
                 
@@ -166,7 +162,7 @@ def consultancy_application(request):
             rc = rewardcategory.objects.get(name='consultancy')
             ach = achievements.objects.create(
                 title=data['name'],achievementid=obj.id,
-                date=data['enddate'],category=rc,
+                date=data['date'],category=rc,
                 department=department
                 )
             ach.staff.add(*staffobj)
@@ -203,7 +199,7 @@ def funding_application(request):
         context = {}
         data = {}
         staffobj = []
-        formfields = ['name', 'agency', 'startdate', 'enddate', 'amount', 'status' ,'staffcount']
+        formfields = ['name', 'agency', 'startdate', 'date', 'amount', 'status' ,'staffcount']
         for field in formfields:
             if field != 'staffcount':
                 data[field] = request.POST[field]
@@ -215,16 +211,8 @@ def funding_application(request):
                         staffobj.append(_staff)
                 except ObjectDoesNotExist:
                     context = {
+                        'errorhelp': "Kindly correct the errors below",
                         'error': f'Specified Employee ID of staffs: {_username} is invalid or does not exist',
-                        'name': data['name'],
-                        'agency': data['agency'],
-                        'startdate': data['startdate'],
-                        'enddate': data['enddate'],
-                        'amount': data['amount'],
-                        'status': data['status'],
-                        'receivedamount': request.POST['receivedamount'],
-                        'uc': request.POST['uc'],
-                        'staffcount': request.POST['staffcount']
                     }
                     return render(request, 'central/funding_application.html', context)
             
@@ -246,7 +234,7 @@ def funding_application(request):
             rc = rewardcategory.objects.get(name='funding')
             ach = achievements.objects.create(
                 title=data['name'], achievementid = obj.id,
-                date=data['enddate'], category=rc,
+                date=data['date'], category=rc,
                 department=department
                 )
             ach.staff.add(*staffobj)
@@ -361,13 +349,12 @@ def phd_application(request):
                     }
                     return render(request, 'central/phd_application.html', context)
         
-        department = dept.objects.get(name = request.POST['department'])
+        department = dept.objects.get(name = request.user.dept)
         try:    
-            supervisor = staff.objects.get(username = request.POST['supervisorid'])
             obj = _phd.objects.create(**data)
             obj.staffs.add(*staffobj)
             obj.department = department
-            obj.supervisor = supervisor
+            obj.supervisor = request.user
             
             
             # Centralizing for Operation 2
@@ -378,6 +365,7 @@ def phd_application(request):
                 date=data['date'],category=rc,
                 department=department
                 )
+            staffobj.append(request.user)
             ach.staff.add(*staffobj)
             
             ach.save()
